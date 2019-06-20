@@ -1,13 +1,22 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
+class UserProfile(models.Model):
+	user = models.OneToOneField(User,on_delete = models.CASCADE,null=True)
+	upload_date=models.DateTimeField(auto_now_add =True)
+	def __str__(self):
+		return str(self.user)+' '+str(self.upload_date)
 
-class Post(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+# FileUpload form class.
+# class UploadForm(ModelForm):
+# 	class Meta:
+# 		model = Upload
+# 		fields = ('pic',)
 
-    def __str__(self):
-        return self.title
+class UploadImage(models.Model):
+	usr_profile = models.ForeignKey(UserProfile,related_name='images',on_delete=models.CASCADE)
+	image = models.ImageField(upload_to="newImages/")
+	def __str__(self):
+		return str(self.usr_profile)+' '+str(self.image)

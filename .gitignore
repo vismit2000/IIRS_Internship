@@ -1,2 +1,4 @@
 django_project/.vscode/*
 django_project/.vscode/
+django_project/media/*
+django_project/media/

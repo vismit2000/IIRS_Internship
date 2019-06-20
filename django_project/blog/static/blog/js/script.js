@@ -1,5 +1,30 @@
 function loaded(){
+    $("#uploadImagesForm").submit(function(e){
+        return false;
+    });
 }
+
+function submitForm()
+{
+    console.log('Form submit is pressed!!!');
+    var data = new FormData($('form').get(0));
+    data['csrfmiddlewaretoken'] = getCookie('csrftoken');
+    $.ajax({
+        url: '/upload/',
+        type: 'POST',
+        data: data,
+        cache: false,
+        processData: false,
+        // beforeSend: function(xhr) {
+        //     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        // },
+        contentType: false,
+        success: function(data) {
+            console.log(data);
+        }
+    });
+}
+
 function openDialog() {
     document.getElementById('fileid').click();
 }
@@ -209,7 +234,17 @@ const sendRequest = (url, method, data) => {
 };
 
 function getCookie(name) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
