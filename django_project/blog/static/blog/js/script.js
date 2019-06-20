@@ -40,15 +40,11 @@ function displayDimensions() {
 
     var dimInput = document.getElementById('dimensionsValue');
     var numDim = dimInput.value;
-    $('#paramDiv').append(`<form method="POST" class="post-form" enctype="multipart/form-data">  
-    {% csrf_token %}  
-    {{ form.as_p }}`);
     for (var i = 0; i < numDim; i++) {
-        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" id="div' + (i + 1) + '"><input id="fileid" type="file" hidden/><input id="buttonid" type="button" value="Upload File" onclick="openDialog()" /></div>');
+        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" id="div' + (i + 1) + '"></div>');
     }
 
     $('#paramDiv').append('<div><button onclick="makeTable(' + numDim + ');" class="dimSubmitBtn">Submit Dimensions</button></div>');
-    $('#paramDiv').append('</form>x');
 }
 
 function makeTable(numDiv) {

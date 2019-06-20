@@ -58,22 +58,17 @@
          <div id="paramDiv" style="position: absolute;top:35vh;left:40vw;display:block;"> 
             Number of Parameters: <input type="text" name="parameters" id="dimensionsValue">
             <button id="dimensionsBtn" onclick="displayDimensions();">Enter Dimensions</button>
-            <form action="#" method="post" enctype="multipart/form-data" id="uploadImagesForm">
+            <!-- <form action="#" method="post" enctype="multipart/form-data" id="uploadImagesForm">
                {% csrf_token %}
                <input type="hidden" name="csrfmiddlewaretoken" value="AnynRIrC09OLH1eC1VFQRdCzFd1mGsRJz42MpX99uqZIJiFhUuTRzaEgPo8hA7Ec"> <label for="id_pic">Pic:</label><input type="file" name="pic" required="" id="id_pic" multiple> 
                <input type="submit" value="Upload" onclick="submitForm();"/>
-            </form><hr>
-            <ul>
-            <!-- {% for img in images %}
-               <li><a href="{{ img.pic.url }}">{{ img.pic }}</a>
-               <small>({{img.upload_date}})</small></li>
-            {% endfor %} -->
-            </ul>
+            </form><hr> -->
          </div>
          <div id="matrix" style="display:none;">
             <button id="calSumBtn" onclick="calcSum();">Calculate Sum</button>  
             <button id='normMatrixBtn' onclick="normalizeMatrix();">Normalize Matrix</button>
             <button id='saveMatrix' onclick="saveMatrix();">Save Matrix</button>
+            <form id="frm"></form>
          </div>
          <div id="importanceTable" >
             <p class="num">1</p>

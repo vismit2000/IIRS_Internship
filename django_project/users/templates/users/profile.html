@@ -1,6 +1,64 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<script>
+    function makeTable(dimNum,dimString,entries,uploadDate) 
+    {
+        dimensions = dimString.split('$');
+        entries = entries.split(' ');
+        // console.log(dimensions);
+        // console.log(entries);
+
+        var rows = Number(dimNum) + 1;
+        var columns = Number(dimNum) + 1;
+        var form = document.createElement("form");
+        // console.log([rows,columns])
+        for (let i = 0; i < rows; i++) 
+        {
+            for (let j = 0; j < columns; j++) 
+            {
+                if (i == 0 && j == 0) 
+                {
+                    var input = $('<input>').attr({ class: 'matrix_cell', id: i + '' + j, value: 'Class'});
+                    input[0].readOnly = true;
+                    form.appendChild(input[0]);
+                    continue;
+                }
+                if (i == 0 && j != 0) 
+                {
+                    var input = $('<input>').attr({ class: 'matrix_cell', id: i + '' + j,value: dimensions[j - 1]});
+                    input[0].readOnly = true;
+                    form.appendChild(input[0]);
+                    continue;
+                } 
+                else if (j == 0 && i != 0 && i != rows - 1) 
+                {
+                    var input = $('<input>').attr({class: 'matrix_cell',id: i + '' + j,value: dimensions[i - 1]});
+                    input[0].readOnly = true;
+                    form.appendChild(input[0]);
+                    continue;
+                }
+                var input = $('<input>').attr({class: 'matrix_cell',id: i + '' + j,value: entries[(rows-1)*(i-1)+(j-1)]});
+                // console.log(["row",i,"col",j,"value",entries[(rows-1)*(i-1)+(j-1)]]);
+                input[0].readOnly = true;
+                form.appendChild(input[0]);
+              }
+            var br = $('<br>')[0];
+            form.appendChild(br);
+          }
+            var br = $('<br>')[0];
+            // console.log(form);
+            dateDiv = document.createElement('div');
+            datePara = document.createElement('p');
+            console.log(uploadDate);
+            datePara.innerHTML = uploadDate;
+            console.log(datePara);
+            dateDiv.appendChild(datePara);
+            document.body.append(dateDiv);
+            document.body.append(form);
+            document.body.append(br);
+        }
+  </script>
     <div class="content-section">
       <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
@@ -8,7 +66,17 @@
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary">{{ user.email }}</p>
         </div>
+        <div>
+            <!-- <p>{{ matrixArr }}</p> -->
+            {% for matrix in matrixArr %}
+              <script type="text/javascript">
+                  makeTable("{{matrix.dimNum}}","{{matrix.dimString}}","{{ matrix.entries }}","{{ matrix.uploadDate }}");
+              </script>
+            {% endfor %}
+        </div>
       </div>
       <!-- FORM HERE -->
     </div>
 {% endblock content %}
+{% block js %}
+{% endblock js %}

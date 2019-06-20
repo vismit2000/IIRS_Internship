@@ -27,7 +27,7 @@ def about(request):
 def saveMatrix(request):
 	matrixJSON = json.loads( request.body.decode('utf-8'))
 	print(matrixJSON)
-	matrixEntry = matrix(numOfDimensions = matrixJSON['numOfDimensions'], dimensionsString = matrixJSON['dimensionsString'], entries = matrixJSON['entries'])
+	matrixEntry = matrix(numOfDimensions = matrixJSON['numOfDimensions'], dimensionsString = matrixJSON['dimensionsString'], entries = matrixJSON['entries'],user = request.user)
 	matrixEntry.save()
 	res = {'error':'noError'}
 	return JsonResponse(res)
