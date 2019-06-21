@@ -221,7 +221,12 @@ const sendRequest = (url, method, data) => {
     var csrftoken = getCookie('csrftoken');
     request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
-            console.log('matrix saved successfully!!');
+            if(url == 'saveMatrix/')
+                console.log('matrix saved successfully!!');
+            else if(url == 'processImages/')
+            {
+                console.log(request.response);
+            }
         }
     };
     request.open(method, url, true);
@@ -243,4 +248,37 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function criteriaWeights()
+{
+    dimensions = getMatrix();
+    rows = dimensions['rowNum'];
+    cols = dimensions['colNum'];   
+    rowSum = []   
+    var rowsSumHtml = "<div style='position:absolute; top:70vh; left: 40vw;'>";
+    for (let i = 1; i < rows - 1; i++) {
+        rowSum[i-1] = 0;
+        for (let j = 1; j < cols; j++) {
+            console.log([i,j,$('#' + i + '' + j).val()]);
+            rowSum[i-1] += Number($('#' + i + '' + j).val());    
+        }
+        rowSum[i-1]/=(cols-1);
+        rowsSumHtml+='<input type="text" class="rowsSumInputs" value="'+rowSum[i-1]+'" readonly><br>';
+    }
+    rowsSumHtml+="</div>";
+    console.log(rowsSumHtml);
+    $('#frm').after(rowsSumHtml);
+}
+
+function displayFinalImage()
+{
+    inputs = document.getElementsByClassName('rowsSumInputs');
+    valueArr = []
+    for(let i=0; i<inputs.length; i++)
+    {
+        valueArr.push(inputs[i].value);
+    }
+    data = {'valueArr' : valueArr};
+    sendRequest('processImages/', 'POST', JSON.stringify(data));
 }

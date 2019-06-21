@@ -10,10 +10,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.forms.models import model_to_dict
-import os
-import gdal
-import numpy
-
+import os, sys, time, gdal
+from gdalconst import *
+import numpy as np
+from osgeo import osr
 
 @login_required
 def home(request):
@@ -59,23 +59,69 @@ def upload(request):
 	return JsonResponse({'error':'true','message':'Failed'})
 
 def processImages(request):
-	if request.method == "GET":
-		usr = request.user
-		user_profile = UserProfile.objects.get(user = usr)
-		images = UploadImage.objects.filter(usr_profile = user_profile)
+	if request.method == "POST":
+		# usr = request.user
+		# user_profile = UserProfile.objects.get(user = usr)
+		# images = UploadImage.objects.filter(usr_profile = user_profile)
 		# data = serializers.serialize('json', images)
-		for img in images:
-			file = img
-			print(file.image.url)
-			ds = gdal.Open('.'+file.image.url)
+		# for img in images:
+		# 	file = img
+		# 	print(file.image.url)
+		# 	ds = gdal.Open('.'+file.image.url)
+		# 	band = ds.GetRasterBand(1)
+		# 	arr = band.ReadAsArray()
+		# 	[cols, rows] = arr.shape
+		# 	print(arr.shape)
+		# 	arr_min = arr.min()
+		# 	arr_max = arr.max()
+		# 	arr_mean = int(arr.mean())
+		# 	print([arr_min,arr_max,arr_mean])
+		# 	print(file.image)
+		gdal.AllRegister()
+		imagesPaths = ['../../Downloads/jhilmil/drainage_EucDist_raster.tif','../../Downloads/jhilmil/settlement_EucDist_raster.tif','../../Downloads/jhilmil/road_EucDist_raster.tif','../../Downloads/jhilmil/veg_fin_15km_raster.tif']
+		resultantArr = []
+		weight = json.loads(request.body.decode('utf-8'))['valueArr']
+		print(weight)
+		for i in range(len(imagesPaths)):
+			# open the image
+			ds = gdal.Open(imagesPaths[i] , GA_ReadOnly)
+			if ds is None:
+				print ('Could not open image')
+				sys.exit(1)
+
 			band = ds.GetRasterBand(1)
 			arr = band.ReadAsArray()
-			[cols, rows] = arr.shape
-			print(arr.shape)
-			arr_min = arr.min()
-			arr_max = arr.max()
-			arr_mean = int(arr.mean())
-			print([arr_min,arr_max,arr_mean])
-			print(file.image)
-
-		return JsonResponse({'error':'flase'})
+			arr = arr * float(weight[i])
+			if i==0:
+				resultantArr = arr
+			else:
+				resultantArr = resultantArr + arr
+		print(resultantArr)
+		geotransform = ds.GetGeoTransform()
+		wkt = ds.GetProjection()
+		# Create gtif file
+		driver = gdal.GetDriverByName("GTiff")
+		output_file = "./abc.tif"
+		dst_ds = driver.Create(output_file,
+							band.XSize,
+							band.YSize,
+							1,
+							gdal.GDT_Int16)
+		
+		new_array = np.array(resultantArr)
+		#writting output raster
+		dst_ds.GetRasterBand(1).WriteArray( new_array )
+		#setting nodata value
+		dst_ds.GetRasterBand(1).SetNoDataValue(-999)
+		#setting extension of output raster
+		# top left x, w-e pixel resolution, rotation, top left y, rotation, n-s pixel resolution
+		dst_ds.SetGeoTransform(geotransform)
+		# setting spatial reference of output raster
+		srs = osr.SpatialReference()
+		srs.ImportFromWkt(wkt)
+		dst_ds.SetProjection( srs.ExportToWkt() )
+		#Close output raster dataset
+		ds = None
+		dst_ds = None
+		return JsonResponse({'error':'false','array':resultantArr.tolist()})
+	return JsonResponse({'error':'true'})
