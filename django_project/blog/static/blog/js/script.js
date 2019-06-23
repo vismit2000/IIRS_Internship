@@ -118,7 +118,7 @@ function makeTable(numDiv) {
             $('#' + i + '' + j).on('keyup', (e) => {
                 if (e.keyCode == 13) {
                     console.log('You pressed enter inside elem with id' + i + '' + j);
-                    document.getElementById(j + '' + i).value = 1 / (document.getElementById(i + '' + j).value);
+                    document.getElementById(j + '' + i).value = (1 / (document.getElementById(i + '' + j).value)).toFixed(3);
                 }
             });
         }
@@ -179,7 +179,7 @@ const normalizeMatrix = () => {
     cols = dimensions['colNum'];
     for (let i = 1; i < rows - 1; i++) {
         for (let j = 1; j < cols; j++) {
-            $('#' + i + '' + j).val($('#' + i + '' + j).val() / $('#' + (rows - 1) + '' + j).val());
+            $('#' + i + '' + j).val(($('#' + i + '' + j).val() / $('#' + (rows - 1) + '' + j).val()).toFixed(3));
         }
     }
 };
@@ -225,7 +225,13 @@ const sendRequest = (url, method, data) => {
                 console.log('matrix saved successfully!!');
             else if(url == 'processImages/')
             {
-                console.log(request.response);
+                response = JSON.parse(request.response);
+                console.log(response);
+                var image = new Image();
+                image.src = 'data:image/jpg;base64,';
+                image.src+=response.image;
+                
+                document.body.appendChild(image);
             }
         }
     };
@@ -264,7 +270,7 @@ function criteriaWeights()
             rowSum[i-1] += Number($('#' + i + '' + j).val());    
         }
         rowSum[i-1]/=(cols-1);
-        rowsSumHtml+='<input type="text" class="rowsSumInputs" value="'+rowSum[i-1]+'" readonly><br>';
+        rowsSumHtml+='<input type="text" class="rowsSumInputs" value="'+rowSum[i-1].toFixed(3)+'" readonly><br>';
     }
     rowsSumHtml+="</div>";
     console.log(rowsSumHtml);

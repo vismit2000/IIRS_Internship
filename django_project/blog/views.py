@@ -14,6 +14,8 @@ import os, sys, time, gdal
 from gdalconst import *
 import numpy as np
 from osgeo import osr
+import base64
+
 
 @login_required
 def home(request):
@@ -78,7 +80,9 @@ def processImages(request):
 		# 	print([arr_min,arr_max,arr_mean])
 		# 	print(file.image)
 		gdal.AllRegister()
-		imagesPaths = ['../../Downloads/jhilmil/drainage_EucDist_raster.tif','../../Downloads/jhilmil/settlement_EucDist_raster.tif','../../Downloads/jhilmil/road_EucDist_raster.tif','../../Downloads/jhilmil/veg_fin_15km_raster.tif']
+		imagesPaths = ['JHILMIL/Reclass_veg.tif', 'JHILMIL/Reclass_drainage.tif', 'JHILMIL/Reclass_road.tif', 'JHILMIL/Reclass_set.tif']
+		
+
 		resultantArr = []
 		weight = json.loads(request.body.decode('utf-8'))['valueArr']
 		print(weight)
@@ -106,7 +110,7 @@ def processImages(request):
 							band.XSize,
 							band.YSize,
 							1,
-							gdal.GDT_Int16)
+							gdal.GDT_Float32)
 		
 		new_array = np.array(resultantArr)
 		#writting output raster
@@ -123,5 +127,23 @@ def processImages(request):
 		#Close output raster dataset
 		ds = None
 		dst_ds = None
-		return JsonResponse({'error':'false','array':resultantArr.tolist()})
+
+
+		options_list = [
+			'-ot Byte',
+			'-of JPEG',
+			'-b 1',
+			'-scale'
+		] 
+		options_string = " ".join(options_list)
+		gdal.Translate('./abc.jpg',
+					output_file,
+					options=options_string)
+
+		output_file2 = './abc.jpg'
+		with open(output_file2,mode='rb') as file:
+			img = file.read()
+		data = {'error':'false','array':resultantArr.tolist(),'image':base64.encodebytes(img).decode("utf-8")}
+		print(json.dumps(data))
+		return JsonResponse(data)
 	return JsonResponse({'error':'true'})
