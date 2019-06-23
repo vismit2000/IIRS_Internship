@@ -1,6 +1,64 @@
+const RI = {
+    "1" : 0.00,
+    "2" : 0.00,
+    "3" : 0.58,
+    "4" : 0.90,
+    "5" : 1.12,
+    "6" : 1.24,
+    "7" : 1.32,
+    "8" : 1.41,
+    "9" : 1.45,
+    "10" : 1.49
+};
+var userMatrix = [] ;
 function loaded(){
     $("#uploadImagesForm").submit(function(e){
         return false;
+    });
+    var ball = document.querySelectorAll('.ball');
+
+var tl = new TimelineMax({ repeat: -1, yoyo: true });
+tl.staggerFromTo(ball, 1, {
+      x: 0,
+      y: 0,
+      autoAlpha: 0,
+      scale: .1
+    }, {
+      autoAlpha: 1,
+      scale: 1,
+      bezier: {
+        type: 'soft',
+        values: [{
+          x: -50,
+          y: -50
+        }, {
+          x: -100,
+          y: 0
+        }, {
+          x: -50,
+          y: 50
+        }, {
+          x: 0,
+          y: 0
+        },{
+          x: -50,
+          y: 50
+        }, {
+          x: 50,
+          y: -50
+        }, {
+          x: 100,
+          y: 0
+        }, {
+          x: 50,
+          y: 50
+        }, {
+          x: 0,
+          y: 0
+        }]
+      },
+      ease: Power1.easeInOut,
+      stagger: '0.1'
     });
 }
 
@@ -49,13 +107,16 @@ function displayDimensions() {
 
 function makeTable(numDiv) {
     document.getElementById('paramDiv').style.display = 'none';
-    document.getElementById('matrix').style.display = 'block';
+    document.getElementById('matrix').style.display = 'flex';
     document.getElementById('importanceTable').style.display = "block";
     var rows = numDiv + 2;
     var columns = numDiv + 1;
     var form = document.getElementById("frm");
 
     for (let i = 0; i < rows; i++) {
+        var rowDiv = document.createElement('div');        
+        if (i == rows-1)
+            rowDiv.style.marginTop="2vh";
         for (let j = 0; j < columns; j++) {
             if (i == 0 && j == 0) {
                 var input = $('<input>').attr({
@@ -64,7 +125,7 @@ function makeTable(numDiv) {
                     value: 'Class'
                 });
                 input[0].readOnly = true;
-                form.appendChild(input[0]);
+                rowDiv.appendChild(input[0]);
                 continue;
             }
             if (i == 0 && j != 0) {
@@ -74,7 +135,7 @@ function makeTable(numDiv) {
                     value: document.getElementsByClassName('dimensions')[j - 1].value
                 });
                 input[0].readOnly = true;
-                form.appendChild(input[0]);
+                rowDiv.appendChild(input[0]);
                 continue;
             } else if (j == 0 && i != 0 && i != rows - 1) {
                 var input = $('<input>').attr({
@@ -83,7 +144,7 @@ function makeTable(numDiv) {
                     value: document.getElementsByClassName('dimensions')[i - 1].value
                 });
                 input[0].readOnly = true;
-                form.appendChild(input[0]);
+                rowDiv.appendChild(input[0]);
                 continue;
             }
             var a;
@@ -91,6 +152,10 @@ function makeTable(numDiv) {
                 a = 1;
             else
                 a = 0;
+
+            if((i == rows-1) && (j == 0))
+                a = 'sum';
+
             var input = $('<input>').attr({
                 class: 'matrix_cell',
                 id: i + '' + j,
@@ -99,19 +164,10 @@ function makeTable(numDiv) {
             if (i == j)
                 input[0].readOnly = true;
 
-            form.appendChild(input[0]);
-
-            if (i == rows - 1) {
-                if (j == 0)
-                    $('#' + i + '' + j).val('sum');
-                else
-                    $('#' + i + '' + j).val(0);
-
-                document.getElementById(i + '' + j).style.marginTop = '2vh';
-            }
+            rowDiv.appendChild(input[0]);
         }
-        var br = $('<br>')[0];
-        form.appendChild(br);
+        // var br = $('<br>')[0];
+        form.appendChild(rowDiv);
     }
     for (let i = 1; i < rows; i++) {
         for (let j = 1; j < columns; j++) {
@@ -134,14 +190,12 @@ function getMatrix() {
         colNum = 0;
 
     $("#frm").contents().each(function(i, e) {
-        if (this.nodeName == "INPUT") {
-            if (rowNum == 0)
-                colNum++;
-        } else {
+        if (this.nodeName == "DIV") {
             rowNum++;
         }
     });
-
+    colNum = document.getElementsByClassName('matrix_cell').length;
+    colNum/=rowNum;
     dimensions = {};
     dimensions['rowNum'] = rowNum;
     dimensions['colNum'] = colNum;
@@ -149,6 +203,7 @@ function getMatrix() {
 }
 
 function arrSum(arr) {
+    console.log('arrSum called');
     sum = 0;
     for (let i = 0; i < arr.length; i++) {
         sum += arr[i];
@@ -157,20 +212,32 @@ function arrSum(arr) {
 }
 
 const calcSum = () => {
+    console.log('called');
     dimensions = getMatrix();
+    console.log(dimensions);
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];
     arr = [];
     sum = 0;
+    let temp = new Array(rows-1);
+    for (let i = 0; i < rows-1; i++) {
+        temp[i] = new Array(cols);
+        for (let j = 0; j < cols; j++) {
+            temp[i][j] = $('#'+i+''+j).val();
+        }
+    }
+    userMatrix = temp;  
     for (let j = 1; j < cols; j++) {
         arr = [];
         for (let i = 1; i < rows - 1; i++) {
+            console.log('hi');
             arr.push(Number($('#' + i + '' + j).val()));
         }
         sum = arrSum(arr);
         console.log(sum);
         $('#' + (rows - 1) + '' + j).val(sum);
     }
+    console.log(userMatrix);
 };
 
 const normalizeMatrix = () => {
@@ -232,6 +299,7 @@ const sendRequest = (url, method, data) => {
                 image.src+=response.image;
                 
                 document.body.appendChild(image);
+                document.getElementById('loader').style.display='none';
             }
         }
     };
@@ -279,6 +347,7 @@ function criteriaWeights()
 
 function displayFinalImage()
 {
+    document.getElementById('loader').style.display='block';
     inputs = document.getElementsByClassName('rowsSumInputs');
     valueArr = []
     for(let i=0; i<inputs.length; i++)
@@ -287,4 +356,148 @@ function displayFinalImage()
     }
     data = {'valueArr' : valueArr};
     sendRequest('processImages/', 'POST', JSON.stringify(data));
+}
+
+//-----------------------------------------Steps Tracker JS----------------------------------------------
+
+$('#step-list li.option').click(function () {
+    $(this).addClass('active');
+    var stepFor = $(this).attr('for');
+    $('.billing__main__content__forms__div').removeClass('active');
+    $('#' + stepFor).addClass('active');
+
+    if(stepFor == 'extra-info'){
+        $('#step-list li.warning').css('display','none');
+    }
+
+    var dataStep = $(this).attr('data-step');
+    $('#step-list li.option').each(function() {
+        if($(this).attr('data-step') > dataStep){
+            $(this).removeClass('active');
+        }else{
+            $(this).addClass('active');
+        }
+        if($(this).attr('data-step') >= dataStep){
+            $(this).removeClass('done');
+        }else{
+            $(this).addClass('done');
+        }
+    });
+});
+$('.billing__main__content__forms__btn').click(function () {
+    var formsBtnId = $(this).attr('data-continue');
+
+    $("li[for = '" + formsBtnId + "']").trigger( "click" );
+
+
+    var findLiStep = $("li[for = '" + formsBtnId + "']").attr('data-step');
+
+    $('#step-list li.option').each(function() {
+        if($(this).attr('data-step') >= findLiStep){
+            $(this).removeClass('done');
+        }else{
+            $(this).addClass('done');
+        }
+    });
+});
+
+$('#extra-info-view').click(function () {
+    $('#step-list li.warning').css('display','none');
+});
+
+
+$('.billing__main__search span').click(function () {
+    if($(this).hasClass('clicked')){
+        $(this).removeClass('clicked');
+        $(this).html('YENİ AKTİVİTE ARA <i class="fa fa-angle-down" aria-hidden="true"></i>');
+        $('.billing__main__header__default').addClass('active');
+        $('.billing__main__header__search').removeClass('active');
+    }
+    else{
+        $(this).addClass('clicked');
+        $(this).html('ARAMAYI KAPAT <i class="fa fa-times" aria-hidden="true"></i>');
+        $('.billing__main__header__default').removeClass('active');
+        $('.billing__main__header__search').addClass('active');
+    }
+});
+
+//-----------------------------------------Steps Tracker JS Ends----------------------------------------------
+
+
+function displayFunctnBtn(val)
+{
+    let btns = document.getElementsByClassName('functionBtn');
+    for(let i=0; i<btns.length; i++)
+    {
+        if(i == val)
+            btns[i].style.display = 'inline';
+        else
+            btns[i].style.display = 'none';
+    }
+}
+
+
+function checkConsistency()
+{
+    console.log(userMatrix);
+    dimensions = getMatrix();
+    rows = dimensions['rowNum'];
+    cols = dimensions['colNum'];
+    let matrix = new Array(rows-2);
+    for(let i=0;i<rows-2; i++)
+    {
+        matrix[i] = new Array(cols-1);
+        for(let j=0; j<cols-1; j++)
+        {
+            matrix[i][j] = userMatrix[i+1][j+1];
+        }
+    }
+    sum = 0;
+
+    let weightsArray = new Array(rows-2);
+    let weights = document.getElementsByClassName('rowsSumInputs');
+    for(let i=0; i<weights.length; i++)
+    {
+        weightsArray[i] = weights[i].value;
+    }
+
+    let sumArr = new Array(rows-2);
+    let x = 0;
+    for (let i = 1; i < rows-1; i++) {
+        sumArr[i-1] = 0;
+        for (let j = 1; j < cols; j++) {
+            matrix[i-1][j-1]*=weightsArray[j-1];
+            sumArr[i-1] += matrix[i-1][j-1];
+        }
+        sumArr[i-1]/=weightsArray[i-1];
+        x+=sumArr[i-1];
+    }   
+
+    const lambda = (x/(rows-2)).toFixed(3);
+    console.log(lambda);
+    const CI = ((lambda-(rows-2))/((rows-2)-1)).toFixed(3);
+    console.log(CI);
+    const CR = (CI/RI[rows-2]).toFixed(3);
+    console.log(CR);
+    if(CR<.1){
+        swal("Great!", "Consistency Ratio is = "+CR, "success");
+        let elems =  document.getElementsByClassName('functionalityLinks');
+        elems[elems.length-1].style.pointerEvents = 'all';
+        elems[elems.length-2].style.pointerEvents = 'all';
+    }
+    else
+    {
+        swal("Sorry!", "Consistency Ratio is = "+CR+"!! Please enter values again :(", "error");
+        for(let i=0; i<userMatrix.length; i++)
+        {
+            for(let j=0; j<userMatrix[i].length; j++)
+            {
+                $('#'+(i)+''+(j)).val(userMatrix[i][j]);
+            }
+        }
+        for(let j=1; j<=userMatrix[0].length; j++)
+            $('#'+(userMatrix.length)+''+(j)).val(0);
+    }
+    console.log(matrix);
+    console.log(x);
 }

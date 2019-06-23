@@ -14,8 +14,24 @@
       <title>DSS AHP</title>
       {% endif %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css" type="text/css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
    </head>
    <body onload="loaded();">
+      <div id="loader">
+
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+
+      </div>
       <header class="site-header">
          <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container">
@@ -29,7 +45,7 @@
                      <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
                   </div>
                   <!-- Navbar Right Side -->
-                  <div class="navbar-nav">
+                  <div class="navbar-nav" style="float: right !important">
                      {% if user.is_authenticated %}
                      <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                      <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
@@ -43,21 +59,9 @@
          </nav>
       </header>
       <main role="main" class="container">
-         <div class="row">
-            <div class="col-md-8">
-               {% if messages %}
-               {% for message in messages %}
-               <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-               </div>
-               {% endfor %}
-               {% endif %}
-               {% block content %}{% endblock %}
-            </div>
-         </div>
          <div id="paramDiv" style="position: absolute;top:35vh;left:40vw;display:block;"> 
             Number of Parameters: <input type="text" name="parameters" id="dimensionsValue">
-            <button id="dimensionsBtn" onclick="displayDimensions();">Enter Dimensions</button>
+            <a id="dimensionsBtn" onclick="displayDimensions();" class="special" >Enter Dimensions</a>
             <!-- <form action="#" method="post" enctype="multipart/form-data" id="uploadImagesForm">
                {% csrf_token %}
                <input type="hidden" name="csrfmiddlewaretoken" value="AnynRIrC09OLH1eC1VFQRdCzFd1mGsRJz42MpX99uqZIJiFhUuTRzaEgPo8hA7Ec"> <label for="id_pic">Pic:</label><input type="file" name="pic" required="" id="id_pic" multiple> 
@@ -65,12 +69,72 @@
             </form><hr> -->
          </div>
          <div id="matrix" style="display:none;">
-            <button id="calSumBtn" onclick="calcSum();">Calculate Sum</button>  
-            <button id='normMatrixBtn' onclick="normalizeMatrix();">Normalize Matrix</button>
-            <button id='saveMatrix' onclick="saveMatrix();">Save Matrix</button>
-            <button id='rowAvg' onclick="criteriaWeights();">Generate criteria weights</button>
-            <button id='finalImage' onclick="displayFinalImage();">Display Final Image</button>
-            <form id="frm"></form>
+            <div style="margin-top:2vh;margin-bottom:4vh;">
+               <a class="special functionBtn" id="calSumBtn" onclick="calcSum();">Column Sum</a>  
+               <a class="special functionBtn" id='normMatrixBtn' onclick="normalizeMatrix();">Normalize Matrix</a>
+               <a class="special functionBtn" id='rowAvg' onclick="criteriaWeights();">Criteria weights</a>
+               <a class="special functionBtn" id='consistencyCheck' onclick="checkConsistency();">Check Consistency</a>
+               <a class="special functionBtn" id='saveMatrix' onclick="saveMatrix();">Save Matrix</a>
+               <a class="special functionBtn" id='finalImage' onclick="displayFinalImage();">Final Image</a>
+            </div>
+            <div style="display: flex; flex-direction:column;">
+               <form id="frm"></form>
+            </div>
+
+            <div class="container">
+                  <div class="col-md-4 col-12">
+                    <div class="billing__main__content__step row">
+                        <ul id="step-list">
+                            <li class="option active" for="participant-info" data-step="1">
+                                <a href="javascript:void(0)" onclick="displayFunctnBtn(0)" class="functionalityLinks">
+                                    <span class="default"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
+                                    <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <p>Calculate Column Sum</p>
+                                </a>
+                            </li>
+                            <li class="option" for="contact-info" data-step="2">
+                                <a href="javascript:void(0)" onclick="displayFunctnBtn(1)" class="functionalityLinks">
+                                    <span class="default"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                    <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <p>Normalize Matrix</p>
+                                </a>
+                            </li>
+                            <li class="option" for="extra-info" data-step="3">
+                                <a href="javascript:void(0)" class="selected" onclick="displayFunctnBtn(2)" class="functionalityLinks">
+                                    <span class="default"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+                                    <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <p>
+                                          Generate Criteria Weights
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="option" for="payment-info" data-step="4">
+                                <a href="javascript:void(0)" onclick="displayFunctnBtn(3)" class="functionalityLinks">
+                                    <span class="default"><i class="fa fa-" aria-hidden="true"></i></span>
+                                    <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <p>Check Consistency</p>
+                                </a>
+                            </li>
+                            <li class="option" for="congratulations" data-step="5">
+                                <a href="javascript:void(0)" onclick="displayFunctnBtn(4)" style="pointer-events: none" class="functionalityLinks">
+                                    <span class="default"><i class="fa fa-save" aria-hidden="true"></i></span>
+                                    <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <p>Save Matrix</p>
+                                </a>
+                            </li>
+                            <li class="option" for="congratulations" data-step="6">
+                                 <a href="javascript:void(0)" onclick="displayFunctnBtn(5)" style="pointer-events: none" class="functionalityLinks">
+                                     <span class="default"><i class="fa fa-hand-peace-o" aria-hidden="true"></i></span>
+                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                     <p>Display Final Image</p>
+                                 </a>
+                             </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+
+
          </div>
          <div id="importanceTable" >
                <div class="table-title">
