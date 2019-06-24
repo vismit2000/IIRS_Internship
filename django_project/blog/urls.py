@@ -7,4 +7,6 @@ urlpatterns = [
     path('saveMatrix/', views.saveMatrix, name='saveMatrix'),
     path('upload/', views.upload, name='upload'),
     path('processImages/', views.processImages, name='processImages'),
+    path('tryNew/', views.tryNew, name='tryNew'),
+    path('fetchImage/', views.fetchImage, name='fetchImage'),
 ]

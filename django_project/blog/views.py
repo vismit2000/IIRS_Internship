@@ -1,5 +1,5 @@
 from .models import *
-from users.models import matrix
+from users.models import *
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render,redirect
@@ -35,6 +35,21 @@ def saveMatrix(request):
 	return JsonResponse(res)
 
 @csrf_exempt
+def tryNew(request):
+	if request.method=="GET":
+		return render(request, 'blog/try.html')
+
+@csrf_exempt
+def fetchImage(request):
+	valid_image = "./abc.tif"
+	try:
+		with open(valid_image, "rb") as f:
+			print(valid_image)
+			return HttpResponse(f.read(), content_type="image/tiff")
+	except IOError:
+		return render(request,'blog/try.html')
+
+@csrf_exempt
 def upload(request):
 	if request.method=="POST":
 		print(request)
@@ -62,26 +77,9 @@ def upload(request):
 
 def processImages(request):
 	if request.method == "POST":
-		# usr = request.user
-		# user_profile = UserProfile.objects.get(user = usr)
-		# images = UploadImage.objects.filter(usr_profile = user_profile)
-		# data = serializers.serialize('json', images)
-		# for img in images:
-		# 	file = img
-		# 	print(file.image.url)
-		# 	ds = gdal.Open('.'+file.image.url)
-		# 	band = ds.GetRasterBand(1)
-		# 	arr = band.ReadAsArray()
-		# 	[cols, rows] = arr.shape
-		# 	print(arr.shape)
-		# 	arr_min = arr.min()
-		# 	arr_max = arr.max()
-		# 	arr_mean = int(arr.mean())
-		# 	print([arr_min,arr_max,arr_mean])
-		# 	print(file.image)
 		gdal.AllRegister()
-		imagesPaths = ['JHILMIL/Reclass_veg.tif', 'JHILMIL/Reclass_drainage.tif', 'JHILMIL/Reclass_road.tif', 'JHILMIL/Reclass_set.tif']
 		
+		imagesPaths = ['JHILMIL/Reclass_veg.tif', 'JHILMIL/Reclass_drainage.tif', 'JHILMIL/Reclass_road.tif', 'JHILMIL/Reclass_set.tif']
 
 		resultantArr = []
 		weight = json.loads(request.body.decode('utf-8'))['valueArr']
@@ -116,7 +114,7 @@ def processImages(request):
 		#writting output raster
 		dst_ds.GetRasterBand(1).WriteArray( new_array )
 		#setting nodata value
-		dst_ds.GetRasterBand(1).SetNoDataValue(-999)
+		dst_ds.GetRasterBand(1).SetNoDataValue(-9999)
 		#setting extension of output raster
 		# top left x, w-e pixel resolution, rotation, top left y, rotation, n-s pixel resolution
 		dst_ds.SetGeoTransform(geotransform)
@@ -124,6 +122,8 @@ def processImages(request):
 		srs = osr.SpatialReference()
 		srs.ImportFromWkt(wkt)
 		dst_ds.SetProjection( srs.ExportToWkt() )
+
+
 		#Close output raster dataset
 		ds = None
 		dst_ds = None
@@ -145,5 +145,12 @@ def processImages(request):
 			img = file.read()
 		data = {'error':'false','array':resultantArr.tolist(),'image':base64.encodebytes(img).decode("utf-8")}
 		print(json.dumps(data))
+
+		newProfile,created = UserProfile.objects.get_or_create(user = request.user)
+		newProfile.save()
+		print(img)
+		# newPic = FinalProcessedImage(usr_profile = newProfile,image = img)
+		# newPic.save()
+
 		return JsonResponse(data)
 	return JsonResponse({'error':'true'})

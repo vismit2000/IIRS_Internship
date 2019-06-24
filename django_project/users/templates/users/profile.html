@@ -74,6 +74,16 @@
                   makeTable("{{matrix.dimNum}}","{{matrix.dimString}}","{{ matrix.entries }}","{{ matrix.uploadDate }}");
               </script>
             {% endfor %}
+
+            {% for img in processedImagesArr %}
+              <script>
+                var image = new Image();
+                image.src = 'data:image/jpg;base64,';
+                image.src+=img.image;
+                document.body.appendChild(img);
+              </script>
+            {% endfor %}
+
         </div>
       </div>
       <!-- FORM HERE -->

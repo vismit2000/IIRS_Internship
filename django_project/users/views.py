@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
-from users.models import matrix
+from .models import *
+from blog.models import *
+
+import base64
 
 def register(request):
     if request.method == 'POST':
@@ -20,6 +23,9 @@ def register(request):
 @login_required
 def profile(request):
     matricesObjects = matrix().__class__.objects.filter(user = request.user)
+    currUser = UserProfile().__class__.objects.get(user = request.user)
+    processedImages = FinalProcessedImage().__class__.objects.filter(usr_profile = currUser)
+    print(processedImages)
     matricesArr = []
     for i in matricesObjects:
         newMatrix = {}
@@ -31,4 +37,10 @@ def profile(request):
         matricesArr.append(newMatrix)
         # print(matricesArr)
     # print(matricesArr)
-    return render(request, 'users/profile.html',{'matrixArr':matricesArr})
+    processedImagesArr = []
+    ctr = 0
+    for i in processedImages:
+        key = 'img'+str(ctr)
+        processedImagesArr.append({key:base64.encodebytes(i.image).decode("utf-8")})
+        ctr = ctr+1
+    return render(request, 'users/profile.html',{'matrixArr':matricesArr,'processedImagesArr':processedImagesArr})

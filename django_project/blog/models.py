@@ -20,3 +20,9 @@ class UploadImage(models.Model):
 	image = models.ImageField(upload_to="newImages/")
 	def __str__(self):
 		return str(self.usr_profile)+' '+str(self.image)
+
+class FinalProcessedImage(models.Model):
+	usr_profile = models.ForeignKey(UserProfile,related_name='processedImages',on_delete=models.CASCADE)
+	image = models.ImageField(upload_to="processedImages/")
+	def __str__(self):
+		return str(self.usr_profile)+' '+str(self.image)

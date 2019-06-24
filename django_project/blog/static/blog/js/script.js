@@ -12,6 +12,11 @@ const RI = {
 };
 var userMatrix = [] ;
 function loaded(){
+    var img = "../../../../media/newImages/abc.tif";
+    var tiff = new Tiff({buffer: img});
+    var canvas = tiff.toCanvas();
+    document.body.append(canvas);
+
     $("#uploadImagesForm").submit(function(e){
         return false;
     });
