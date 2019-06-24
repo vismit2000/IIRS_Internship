@@ -16,6 +16,17 @@ function loaded(){
         return false;
     });
     var ball = document.querySelectorAll('.ball');
+    
+    //popup 
+    $(".popup img").click(function () {
+        var $src = $(this).attr("src");
+        $(".show").fadeIn();
+        $(".img-show img").attr("src", $src);
+    });
+    
+    $("span, .overlay").click(function () {
+        $(".show").fadeOut();
+    });
 
 var tl = new TimelineMax({ repeat: -1, yoyo: true });
 tl.staggerFromTo(ball, 1, {
@@ -102,7 +113,7 @@ function displayDimensions() {
         $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" id="div' + (i + 1) + '"></div>');
     }
 
-    $('#paramDiv').append('<div><button onclick="makeTable(' + numDim + ');" class="dimSubmitBtn">Submit Dimensions</button></div>');
+    $('#paramDiv').append('<div class="submitDimDiv"><a href="javascript:void(0)" onclick="makeTable(' + numDim + ');" class="dimSubmitBtn special">Submit Dimensions</a></div>');
 }
 
 function makeTable(numDiv) {
@@ -119,8 +130,8 @@ function makeTable(numDiv) {
             rowDiv.style.marginTop="2vh";
         for (let j = 0; j < columns; j++) {
             if (i == 0 && j == 0) {
-                var input = $('<input>').attr({
-                    class: 'matrix_cell',
+                var input = $('<input>').attr({type: 'text' ,
+                    class: 'matrix_cell effect-9',
                     id: i + '' + j,
                     value: 'Class'
                 });
@@ -129,8 +140,8 @@ function makeTable(numDiv) {
                 continue;
             }
             if (i == 0 && j != 0) {
-                var input = $('<input>').attr({
-                    class: 'matrix_cell',
+                var input = $('<input>').attr({type: 'text' ,
+                    class: 'matrix_cell effect-9',
                     id: i + '' + j,
                     value: document.getElementsByClassName('dimensions')[j - 1].value
                 });
@@ -138,8 +149,8 @@ function makeTable(numDiv) {
                 rowDiv.appendChild(input[0]);
                 continue;
             } else if (j == 0 && i != 0 && i != rows - 1) {
-                var input = $('<input>').attr({
-                    class: 'matrix_cell',
+                var input = $('<input>').attr({type: 'text' ,
+                    class: 'matrix_cell effect-9',
                     id: i + '' + j,
                     value: document.getElementsByClassName('dimensions')[i - 1].value
                 });
@@ -156,8 +167,8 @@ function makeTable(numDiv) {
             if((i == rows-1) && (j == 0))
                 a = 'sum';
 
-            var input = $('<input>').attr({
-                class: 'matrix_cell',
+            var input = $('<input>').attr({type: 'text' ,
+                class: 'matrix_cell effect-9',
                 id: i + '' + j,
                 value: a
             });
@@ -194,7 +205,7 @@ function getMatrix() {
             rowNum++;
         }
     });
-    colNum = document.getElementsByClassName('matrix_cell').length;
+    colNum = document.getElementsByClassName('matrix_cell effect-9').length;
     colNum/=rowNum;
     dimensions = {};
     dimensions['rowNum'] = rowNum;
@@ -268,7 +279,7 @@ const saveMatrix = () => {
 
     for (let i = 1; i < rows - 1; i++) {
         for (let j = 1; j < cols; j++) {
-            entries += $('#' + i + '' + j).val();
+            entries += userMatrix[i][j];
 
             if (!((i == rows - 2) && (j == cols - 1)))
                 entries += ' ';
@@ -289,7 +300,10 @@ const sendRequest = (url, method, data) => {
     request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
             if(url == 'saveMatrix/')
+            {
                 console.log('matrix saved successfully!!');
+                swal("Great!", "Matrix saved successfully!!", "success");
+            }
             else if(url == 'processImages/')
             {
                 response = JSON.parse(request.response);
@@ -298,8 +312,11 @@ const sendRequest = (url, method, data) => {
                 image.src = 'data:image/jpg;base64,';
                 image.src+=response.image;
                 
-                document.body.appendChild(image);
+                // document.body.appendChild(image);
+                document.getElementById('finalImg').style.display='block';
+                document.getElementsByClassName('thumbnail')[0].childNodes[1].replaceWith(image);
                 document.getElementById('loader').style.display='none';
+                document.getElementById('weightDiv').style.display='none';
             }
         }
     };
@@ -330,7 +347,7 @@ function criteriaWeights()
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];   
     rowSum = []   
-    var rowsSumHtml = "<div style='position:absolute; top:70vh; left: 40vw;'>";
+    var rowsSumHtml = "<div id='weightDiv' style='position:absolute; top:70vh; left: 40vw;'>";
     for (let i = 1; i < rows - 1; i++) {
         rowSum[i-1] = 0;
         for (let j = 1; j < cols; j++) {
@@ -501,3 +518,10 @@ function checkConsistency()
     console.log(matrix);
     console.log(x);
 }
+
+// ---------------------------------Image Popup Js-----------------------------------------
+
+    
+    
+
+// -----------------------------------Image popup ends-------------------------------------------

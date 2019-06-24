@@ -89,6 +89,7 @@ a.article-title:hover {
 body {
 	background-color: #81bfe7;
 	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 .dimDiv {
@@ -109,11 +110,12 @@ body {
 }
 
 #importanceTable {
-	/* position: absolute; */
-	position: fixed;
-	top: 40vh;
+	position: absolute;
+	/* position: fixed; */
+	/* top: 40vh; */
 	right: 5vw;
 	/* top: 40vh; */
+	bottom: 0;
 	display: none;
 	/* color: white; */
 	/* font-size: 20px; */
@@ -124,7 +126,11 @@ body {
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
 body {
-  background-color: #3e94ec !important;
+  background-image: linear-gradient(123deg, #072567, #6dcca3);
+  background-repeat: no-repeat;
+  /* background-size: 100vw 200vh; */
+  height: 100%;
+  background-attachment: fixed;
   font-family: "Roboto", helvetica, arial, sans-serif !important;
   font-size: 16px !important;
   font-weight: 400 !important;
@@ -569,3 +575,57 @@ td.text-right {
 	  display: none;
   }
   /* ---------------------------------------------- Loader Css Ends--------------------------------------*/
+
+  input[type="text"] {
+	width: 100%;
+	border: 2px solid #aaa;
+	border-radius: 4px;
+	outline: none;
+	padding: 8px;
+	box-sizing: border-box;
+	transition: 0.3s;
+	color: black;
+  }
+  
+  input[type="text"]:focus {
+	border-color: dodgerBlue;
+	box-shadow: 0 0 8px 0 dodgerBlue;
+  }
+
+  .functionalityLinks,#paramDiv,#dimensionsBtn{
+	  color: white !important;
+  }
+
+  #dimensionsValue{
+	  width: auto !important;
+  }
+
+  .special{
+	  color: white !important;
+  }
+
+  a:hover{
+	color: white !important;
+}
+
+  .submitDimDiv{
+	  color: white;
+	  margin-top: 2vh;
+  }
+
+  /*----------------------------------------------- Image Popup CSS -----------------------------------------*/
+  .thumbnail{
+	position: absolute;
+    top: 60vh;
+    left: 40vw;
+	}
+	
+	.thumbnail:hover{
+		background-color: transparent;
+		z-index: 50;
+	}
+
+	.thumbnail img:hover{
+		transform: scale(2);
+	}
+/*========================================Image Popup ends============================================*/
