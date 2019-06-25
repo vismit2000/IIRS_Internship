@@ -277,6 +277,7 @@ const calcSum = () => {
  * normalizes matrix by dividing each entry by corresponding column sum
  */
 const normalizeMatrix = () => {
+    document.getElementById('importanceTable').style.display='none';
     dimensions = getMatrix();
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];
@@ -345,7 +346,8 @@ const sendRequest = (url, method, data) => {
                 response = JSON.parse(request.response);
                 if(response.error == 'false')
                 {
-                    sendRequest('/getImageForMap/','POST');
+                    // sendRequest('/getImageForMap/','POST');
+                    document.getElementById('mapLink').click();
                 }
             }
         }
