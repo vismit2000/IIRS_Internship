@@ -11,10 +11,10 @@
   * uploadDate - date of matrix upload (in UTC format)
   * 
   */
-    function makeTable(dimNum,dimString,entries,uploadDate) 
+    function makeTable(dimNum,dimString,entry,uploadDate) 
     {
         let dimensions = dimString.split('$');
-        let entries = entries.split(' ');
+        let entries = entry.split(' ');
         let rows = Number(dimNum) + 1;
         let columns = Number(dimNum) + 1;
         let form = document.createElement("form");  //for each matrix , there is a new form
@@ -39,7 +39,7 @@
                     continue;
                 } 
 
-                else if (j == 0 && i != 0 && i != rows - 1) ////matrix[i][0] , i!=0 => dimensions names
+                else if (j == 0 && i != 0) ////matrix[i][0] , i!=0 => dimensions names
                 {
                     var input = $('<input>').attr({class: 'matrix_cell',id: i + '' + j,value: dimensions[i - 1]});
                     input[0].readOnly = true;

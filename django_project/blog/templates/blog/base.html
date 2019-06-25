@@ -11,19 +11,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
-
-    {% if title %}
-        <title>Django Blog - {{ title }}</title>
-    {% else %}
-        <title>Django Blog</title>
-    {% endif %}
+    <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/flat_round/50/000000/home.png"/>
+    <title>DSS AHP</title>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Django Blog</a>
+          <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">DSS AHP</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -48,16 +44,9 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
+          {% block content %}
+          {% endblock %}
         </div>
-          
       </div>
     </main>
 

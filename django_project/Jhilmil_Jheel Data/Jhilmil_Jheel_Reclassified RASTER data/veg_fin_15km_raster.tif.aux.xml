@@ -1,0 +1,162 @@
+<PAMDataset>
+  <Metadata domain="Esri">
+    <MDI key="PyramidResamplingType">NEAREST</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Histograms>
+      <HistItem>
+        <HistMin>-0.5</HistMin>
+        <HistMax>18.5</HistMax>
+        <BucketCount>19</BucketCount>
+        <IncludeOutOfRange>1</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>0|3421|1579|3016|5159|1084|1948|19071|4848|410|2585|17092|443|29|145|247|247|519|657</HistCounts>
+      </HistItem>
+      <HistItem>
+        <HistMin>0.5277777777777778</HistMin>
+        <HistMax>18.47222222222222</HistMax>
+        <BucketCount>18</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>3421|1579|3016|5159|1084|1948|19071|4848|410|2585|17092|443|29|145|247|247|519|657</HistCounts>
+      </HistItem>
+    </Histograms>
+    <GDALRasterAttributeTable>
+      <FieldDefn index="0">
+        <Name>OBJECTID</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="1">
+        <Name>Value</Name>
+        <Type>0</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="2">
+        <Name>Count</Name>
+        <Type>1</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <FieldDefn index="3">
+        <Name>TYPE</Name>
+        <Type>2</Type>
+        <Usage>0</Usage>
+      </FieldDefn>
+      <Row index="0">
+        <F>1</F>
+        <F>1</F>
+        <F>3421</F>
+        <F>Khair Plantation</F>
+      </Row>
+      <Row index="1">
+        <F>2</F>
+        <F>2</F>
+        <F>1579</F>
+        <F>Grassland</F>
+      </Row>
+      <Row index="2">
+        <F>3</F>
+        <F>3</F>
+        <F>3016</F>
+        <F>Scrub</F>
+      </Row>
+      <Row index="3">
+        <F>4</F>
+        <F>4</F>
+        <F>5159</F>
+        <F>Moist deciduous forest</F>
+      </Row>
+      <Row index="4">
+        <F>5</F>
+        <F>5</F>
+        <F>1084</F>
+        <F>Khair-Shisham forest</F>
+      </Row>
+      <Row index="5">
+        <F>6</F>
+        <F>6</F>
+        <F>1948</F>
+        <F>Water body</F>
+      </Row>
+      <Row index="6">
+        <F>7</F>
+        <F>7</F>
+        <F>19071</F>
+        <F>Eucalyptus Plantation</F>
+      </Row>
+      <Row index="7">
+        <F>8</F>
+        <F>8</F>
+        <F>4848</F>
+        <F>River bed</F>
+      </Row>
+      <Row index="8">
+        <F>9</F>
+        <F>9</F>
+        <F>410</F>
+        <F>Teak Plantation</F>
+      </Row>
+      <Row index="9">
+        <F>10</F>
+        <F>10</F>
+        <F>2585</F>
+        <F>Mixed Plantation</F>
+      </Row>
+      <Row index="10">
+        <F>11</F>
+        <F>11</F>
+        <F>17092</F>
+        <F>Agriculture I</F>
+      </Row>
+      <Row index="11">
+        <F>12</F>
+        <F>12</F>
+        <F>443</F>
+        <F>Settlement</F>
+      </Row>
+      <Row index="12">
+        <F>13</F>
+        <F>13</F>
+        <F>29</F>
+        <F>Orchard</F>
+      </Row>
+      <Row index="13">
+        <F>14</F>
+        <F>14</F>
+        <F>145</F>
+        <F>Forest Depot</F>
+      </Row>
+      <Row index="14">
+        <F>15</F>
+        <F>15</F>
+        <F>247</F>
+        <F>Shisham Plantation</F>
+      </Row>
+      <Row index="15">
+        <F>16</F>
+        <F>16</F>
+        <F>247</F>
+        <F>Canal</F>
+      </Row>
+      <Row index="16">
+        <F>17</F>
+        <F>17</F>
+        <F>519</F>
+        <F>Wetland</F>
+      </Row>
+      <Row index="17">
+        <F>18</F>
+        <F>18</F>
+        <F>657</F>
+        <F>Agriculture II</F>
+      </Row>
+    </GDALRasterAttributeTable>
+    <Metadata>
+      <MDI key="STATISTICS_COVARIANCES">11.6065330225444</MDI>
+      <MDI key="STATISTICS_MAXIMUM">18</MDI>
+      <MDI key="STATISTICS_MEAN">7.667728</MDI>
+      <MDI key="STATISTICS_MINIMUM">1</MDI>
+      <MDI key="STATISTICS_STDDEV">3.4068089641211</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

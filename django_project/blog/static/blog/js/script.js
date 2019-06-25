@@ -12,7 +12,11 @@ const RI = {
     "10" : 1.49
 };
 
-var userMatrix = [] ;
+var userMatrix = [] ;   //global variable to store user's initial input matrix
+
+/**
+ * funciton called after body is loaded , used to initilise wizard functionality
+ */
 function loaded(){
     $("#uploadImagesForm").submit(function(e){
         return false;
@@ -75,30 +79,35 @@ tl.staggerFromTo(ball, 1, {
     });
 }
 
-function submitForm()
-{
-    console.log('Form submit is pressed!!!');
-    var data = new FormData($('form').get(0));
-    data['csrfmiddlewaretoken'] = getCookie('csrftoken');
-    $.ajax({
-        url: '/upload/',
-        type: 'POST',
-        data: data,
-        cache: false,
-        processData: false,
-        // beforeSend: function(xhr) {
-        //     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-        // },
-        contentType: false,
-        success: function(data) {
-            console.log(data);
-        }
-    });
-}
+/**
+ * Function to upload images , uncomment for upload functionality
+ */
+// function submitForm()
+// {
+//     console.log('Form submit is pressed!!!');
+//     var data = new FormData($('form').get(0));
+//     data['csrfmiddlewaretoken'] = getCookie('csrftoken');
+//     $.ajax({
+//         url: '/upload/',
+//         type: 'POST',
+//         data: data,
+//         cache: false,
+//         processData: false,
+//         contentType: false,
+//         success: function(data) {
+//             console.log(data);
+//         }
+//     });
+// }
 
-function openDialog() {
-    document.getElementById('fileid').click();
-}
+// function openDialog() {
+//     document.getElementById('fileid').click();
+// }
+
+
+/**
+ * Function is used to clear and again take dimensions inputs from user (Called on first page by Enter dimensions btn)
+ */
 function displayDimensions() {
     var dimDivs = document.getElementsByClassName('dimDiv');
     while (dimDivs[0]) {
@@ -118,6 +127,10 @@ function displayDimensions() {
     $('#paramDiv').append('<div class="submitDimDiv"><a href="javascript:void(0)" onclick="makeTable(' + numDim + ');" class="dimSubmitBtn special">Submit Dimensions</a></div>');
 }
 
+/**
+ * this function creates a matrix with main diagonal as 1 (read only) and rest 0 (editable by user)
+ * @param {integer} numDiv - number of dimensions user entered
+ */
 function makeTable(numDiv) {
     document.getElementById('paramDiv').style.display = 'none';
     document.getElementById('matrix').style.display = 'flex';
@@ -194,10 +207,9 @@ function makeTable(numDiv) {
     }
 }
 
-$("#get").click(function() {
-    console.log(getMatrix());
-});
-
+/**
+ * returns number of rows and columns in user's input matrix
+ */
 function getMatrix() {
     var rowNum = 0,
         colNum = 0;
@@ -215,6 +227,10 @@ function getMatrix() {
     return dimensions;
 }
 
+/**
+ * takes an array and returns it's sum
+ * @param {Array} arr array of numbers to be summed up
+ */
 function arrSum(arr) {
     console.log('arrSum called');
     sum = 0;
@@ -224,6 +240,9 @@ function arrSum(arr) {
     return sum;
 }
 
+/**
+ * sums each columns of matrix and displays sum in last row
+ */
 const calcSum = () => {
     console.log('called');
     dimensions = getMatrix();
@@ -253,6 +272,9 @@ const calcSum = () => {
     console.log(userMatrix);
 };
 
+/**
+ * normalizes matrix by dividing each entry by corresponding column sum
+ */
 const normalizeMatrix = () => {
     dimensions = getMatrix();
     rows = dimensions['rowNum'];
@@ -264,6 +286,9 @@ const normalizeMatrix = () => {
     }
 };
 
+/**
+ * save matrix in the database
+ */
 const saveMatrix = () => {
     dimensions = getMatrix();
     rows = dimensions['rowNum'];
@@ -296,25 +321,30 @@ const saveMatrix = () => {
     sendRequest('saveMatrix/', 'POST', JSON.stringify(data));
 };
 
+/**
+ * sends an XMLHttpRequest to url
+ * @param {string} url - url to be send data to
+ * @param {string} method - 'GET'/'POST'
+ * @param {Object} data - JSON object to be sent to backend
+ */
 const sendRequest = (url, method, data) => {
     let request = new XMLHttpRequest();
+    //add csrf token to prevent csrf error
     var csrftoken = getCookie('csrftoken');
     request.onreadystatechange = () => {
         if (request.readyState == 4 && request.status == 200) {
+            //success response
             if(url == 'saveMatrix/')
             {
-                console.log('matrix saved successfully!!');
                 swal("Great!", "Matrix saved successfully!!", "success");
             }
             else if(url == 'processImages/')
             {
                 response = JSON.parse(request.response);
-                console.log(response);
                 var image = new Image();
                 image.src = 'data:image/jpg;base64,';
                 image.src+=response.image;
                 
-                // document.body.appendChild(image);
                 document.getElementById('finalImg').style.display='block';
                 document.getElementsByClassName('thumbnail')[0].childNodes[1].replaceWith(image);
                 document.getElementById('loader').style.display='none';
@@ -322,11 +352,18 @@ const sendRequest = (url, method, data) => {
             }
         }
     };
+    //open request
     request.open(method, url, true);
+    //set csrf header
     request.setRequestHeader('X-CSRFToken', csrftoken);
+    //send request
     request.send(data);
 };
 
+/**
+ * to get cookie of csrf token to be sent in request
+ * @param {string} name - name to get cookie of
+ */
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -343,6 +380,9 @@ function getCookie(name) {
     return cookieValue;
 }
 
+/**
+ * generate criteria weights by using formula and show them
+ */
 function criteriaWeights()
 {
     dimensions = getMatrix();
@@ -364,6 +404,9 @@ function criteriaWeights()
     $('#frm').after(rowsSumHtml);
 }
 
+/**
+ * hides loader and shows image
+ */
 function displayFinalImage()
 {
     document.getElementById('loader').style.display='block';
@@ -442,7 +485,10 @@ $('.billing__main__search span').click(function () {
 
 //-----------------------------------------Steps Tracker JS Ends----------------------------------------------
 
-
+/**
+ * to display a particular button on the top of matrix as wizard is followed
+ * @param {number} val 
+ */
 function displayFunctnBtn(val)
 {
     let btns = document.getElementsByClassName('functionBtn');
@@ -455,7 +501,9 @@ function displayFunctnBtn(val)
     }
 }
 
-
+/**
+ * finds consistency and checks if it's within threshold value and displays proper message accordingly
+ */
 function checkConsistency()
 {
     console.log(userMatrix);
@@ -520,10 +568,3 @@ function checkConsistency()
     console.log(matrix);
     console.log(x);
 }
-
-// ---------------------------------Image Popup Js-----------------------------------------
-
-    
-    
-
-// -----------------------------------Image popup ends-------------------------------------------
