@@ -1,10 +1,100 @@
 <PAMDataset>
+  <Metadata domain="xml:XMP" format="xml">
+    <?xpacket begin="&#xFEFF;" id="W5M0MpCehiHzreSzNTczkc9d"?>
+    <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.5-c021 79.154911, 2013/10/29-11:47:16        ">
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#" xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#">
+          <xmp:CreateDate>2014-12-08T14:45:47-05:00</xmp:CreateDate>
+          <xmp:ModifyDate>2017-04-01T20:24:57-07:00</xmp:ModifyDate>
+          <xmp:MetadataDate>2017-04-01T20:24:57-07:00</xmp:MetadataDate>
+          <xmp:CreatorTool>Adobe Photoshop CC 2014 (Macintosh)</xmp:CreatorTool>
+          <dc:format>image/tiff</dc:format>
+          <photoshop:ColorMode>3</photoshop:ColorMode>
+          <xmpMM:InstanceID>xmp.iid:df0f9cc6-5f7d-4562-b1b4-740fcd041d2b</xmpMM:InstanceID>
+          <xmpMM:DocumentID>xmp.did:c8b37324-f370-4079-9fdd-66b42f168471</xmpMM:DocumentID>
+          <xmpMM:OriginalDocumentID>xmp.did:1e043f18-449d-43a8-91c1-3d32f8ad718a</xmpMM:OriginalDocumentID>
+          <xmpMM:History>
+            <rdf:Seq>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>created</stEvt:action>
+                <stEvt:instanceID>xmp.iid:1e043f18-449d-43a8-91c1-3d32f8ad718a</stEvt:instanceID>
+                <stEvt:when>2014-12-08T14:45:47-05:00</stEvt:when>
+                <stEvt:softwareAgent>Adobe Photoshop CC 2014 (Macintosh)</stEvt:softwareAgent>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>converted</stEvt:action>
+                <stEvt:parameters>from image/tiff to application/vnd.adobe.photoshop</stEvt:parameters>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>saved</stEvt:action>
+                <stEvt:instanceID>xmp.iid:a2b74c79-3c8f-4e39-b789-00d03026a96c</stEvt:instanceID>
+                <stEvt:when>2014-12-08T14:54:05-05:00</stEvt:when>
+                <stEvt:softwareAgent>Adobe Photoshop CC 2014 (Macintosh)</stEvt:softwareAgent>
+                <stEvt:changed>/</stEvt:changed>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>saved</stEvt:action>
+                <stEvt:instanceID>xmp.iid:6fcf95dc-953f-4670-bd98-44da1a8c224c</stEvt:instanceID>
+                <stEvt:when>2017-04-01T20:23:39-07:00</stEvt:when>
+                <stEvt:softwareAgent>Adobe Photoshop CC (Macintosh)</stEvt:softwareAgent>
+                <stEvt:changed>/</stEvt:changed>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>converted</stEvt:action>
+                <stEvt:parameters>from application/vnd.adobe.photoshop to image/tiff</stEvt:parameters>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>derived</stEvt:action>
+                <stEvt:parameters>converted from application/vnd.adobe.photoshop to image/tiff</stEvt:parameters>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>saved</stEvt:action>
+                <stEvt:instanceID>xmp.iid:c8b37324-f370-4079-9fdd-66b42f168471</stEvt:instanceID>
+                <stEvt:when>2017-04-01T20:23:39-07:00</stEvt:when>
+                <stEvt:softwareAgent>Adobe Photoshop CC (Macintosh)</stEvt:softwareAgent>
+                <stEvt:changed>/</stEvt:changed>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource">
+                <stEvt:action>saved</stEvt:action>
+                <stEvt:instanceID>xmp.iid:df0f9cc6-5f7d-4562-b1b4-740fcd041d2b</stEvt:instanceID>
+                <stEvt:when>2017-04-01T20:24:57-07:00</stEvt:when>
+                <stEvt:softwareAgent>Adobe Photoshop CC (Macintosh)</stEvt:softwareAgent>
+                <stEvt:changed>/</stEvt:changed>
+              </rdf:li>
+            </rdf:Seq>
+          </xmpMM:History>
+          <xmpMM:DerivedFrom rdf:parseType="Resource">
+            <stRef:instanceID>xmp.iid:6fcf95dc-953f-4670-bd98-44da1a8c224c</stRef:instanceID>
+            <stRef:documentID>adobe:docid:photoshop:e2ca2aa4-566a-1178-a43c-817eebace311</stRef:documentID>
+            <stRef:originalDocumentID>xmp.did:1e043f18-449d-43a8-91c1-3d32f8ad718a</stRef:originalDocumentID>
+          </xmpMM:DerivedFrom>
+        </rdf:Description>
+      </rdf:RDF>
+    </x:xmpmeta>
+    <?xpacket end="w"?>
+  </Metadata>
   <PAMRasterBand band="1">
     <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">4</MDI>
-      <MDI key="STATISTICS_MEAN">2.6972467960014</MDI>
-      <MDI key="STATISTICS_MINIMUM">1.2778828144073</MDI>
-      <MDI key="STATISTICS_STDDEV">0.30192976104801</MDI>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">211.32522991071</MDI>
+      <MDI key="STATISTICS_MINIMUM">150</MDI>
+      <MDI key="STATISTICS_STDDEV">11.140927705897</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="2">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">204.16305245536</MDI>
+      <MDI key="STATISTICS_MINIMUM">133</MDI>
+      <MDI key="STATISTICS_STDDEV">12.996472471763</MDI>
+    </Metadata>
+  </PAMRasterBand>
+  <PAMRasterBand band="3">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">255</MDI>
+      <MDI key="STATISTICS_MEAN">189.88627678571</MDI>
+      <MDI key="STATISTICS_MINIMUM">100</MDI>
+      <MDI key="STATISTICS_STDDEV">16.709841787589</MDI>
     </Metadata>
   </PAMRasterBand>
 </PAMDataset>

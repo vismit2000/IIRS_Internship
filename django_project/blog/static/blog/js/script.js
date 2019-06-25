@@ -1,3 +1,4 @@
+
 // mapping table forn random index
 const RI = {
     "1" : 0.00,
@@ -340,15 +341,12 @@ const sendRequest = (url, method, data) => {
             }
             else if(url == 'processImages/')
             {
-                response = JSON.parse(request.response);
-                var image = new Image();
-                image.src = 'data:image/jpg;base64,';
-                image.src+=response.image;
-                
-                document.getElementById('finalImg').style.display='block';
-                document.getElementsByClassName('thumbnail')[0].childNodes[1].replaceWith(image);
                 document.getElementById('loader').style.display='none';
-                document.getElementById('weightDiv').style.display='none';
+                response = JSON.parse(request.response);
+                if(response.error == 'false')
+                {
+                    sendRequest('/getImageForMap/','POST');
+                }
             }
         }
     };
@@ -568,3 +566,4 @@ function checkConsistency()
     console.log(matrix);
     console.log(x);
 }
+

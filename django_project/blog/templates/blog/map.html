@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+      <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/flat_round/50/000000/home.png"/>
+      <title>DSS AHP</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/dist/css/bootstrap.min.css" type="text/css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" type="text/css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+   </head>
+   <body onload="displayTiff();">
+
+      <header class="site-header">
+         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container">
+               <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">DSS AHP</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarToggle">
+                  <div class="navbar-nav mr-auto">
+                     <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
+                  </div>
+                  <!-- Navbar Right Side -->
+                  <div class="navbar-nav" style="float: right !important">
+                     {% if user.is_authenticated %}
+                     <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                     {% else %}
+                     <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                     <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+         </nav>
+      </header>
+
+      <main role="main" class="container">
+            <div id="map">
+            </div>               
+      </main>
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+     
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://npmcdn.com/leaflet@1.2.0/dist/leaflet.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.0/chroma.min.js"></script>
+      <script src="https://npmcdn.com/geotiff@0.3.6/dist/geotiff.js"></script>
+      <script src="https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/dist/leaflet.canvaslayer.field.js"></script>
+      
+      <script src="{% static 'blog/js/script.js' %}"></script>
+      <script>
+            function displayTiff()
+            {
+                var map = L.map("map");
+                var url = "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png";
+                    L.tileLayer(url, {
+                    attribution: "OSM & Carto",
+                    subdomains: "abcd",
+                    maxZoom: 19
+                }).addTo(map);
+
+                var tiff = "/getTiff";
+                    fetch(tiff).then(r => r.arrayBuffer()).then(function(buffer) {
+                    document.getElementById('map').style.display='block';
+                    var s = L.ScalarField.fromGeoTIFF(buffer);
+                    let layer = L.canvasLayer.scalarField(s).addTo(map);
+                    layer.on("click", function(e) {
+                        if (e.value !== null) {
+                        let popup = L.popup()
+                        .setLatLng(e.latlng)
+                        .setContent(`${e.value}`)
+                        .openOn(map);
+                        }
+                    });
+
+                    map.fitBounds(layer.getBounds());
+                    });
+                
+            }
+      </script>
+   </body>
+</html>

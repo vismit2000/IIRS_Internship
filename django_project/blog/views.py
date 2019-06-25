@@ -99,51 +99,52 @@ def processImages(request):
 				resultantArr = resultantArr + arr
 
 		# save resultant array as tif image using informations from one of input image (Here using last one)
-
+		# ds = gdal.Open('./veg.tif' , GA_ReadOnly)
 		geotransform = ds.GetGeoTransform()
 		wkt = ds.GetProjection()
 		# Create gtif file
 		driver = gdal.GetDriverByName("GTiff")
-		output_file = "./abc.tif"	#output file location
+		output_file = "./newABC.tif"	#output file location
 		dst_ds = driver.Create(output_file,
 							band.XSize,
 							band.YSize,
 							1,
-							gdal.GDT_Float32)
+							gdal.GDT_Byte)
 		
 		new_array = np.array(resultantArr)
-		#writting output raster
-		dst_ds.GetRasterBand(1).WriteArray( new_array )
-		#setting nodata value
-		dst_ds.GetRasterBand(1).SetNoDataValue(-999)
 		#setting extension of output raster
 		# top left x, w-e pixel resolution, rotation, top left y, rotation, n-s pixel resolution
 		dst_ds.SetGeoTransform(geotransform)
 		# setting spatial reference of output raster
 		srs = osr.SpatialReference()
-		srs.ImportFromWkt(wkt)
+		srs.ImportFromEPSG(32644)
 		dst_ds.SetProjection( srs.ExportToWkt() )
+
+		#writting output raster
+		dst_ds.GetRasterBand(1).WriteArray( new_array )
+		#setting nodata value
+		dst_ds.GetRasterBand(1).SetNoDataValue(-9999)
+
 		#Close output raster dataset
 		ds = None
 		dst_ds = None
-
-	# 	converting output tiff to jpeg for display purpose
-		options_list = [
-			'-ot Byte',
-			'-of JPEG',
-			'-b 1',
-			'-scale'
-		] 
-		options_string = " ".join(options_list)
-		gdal.Translate('./abc.jpg',output_file,options=options_string)
-
-		# send this jpg file to frontend by encoding it
-		output_file2 = './abc.jpg'
-
-		with open(output_file2,mode='rb') as file:
-			img = file.read()
-			
-		data = {'error':'false','array':resultantArr.tolist(),'image':base64.encodebytes(img).decode("utf-8")}
+		
+		data = {'error':'false'}
 		print(json.dumps(data))
 		return JsonResponse(data)
 	return JsonResponse({'error':'true'})
+
+@csrf_exempt
+def getTiff(request):
+	valid_image = "./newABC.tif"
+	inputRaster = gdal.Open(valid_image)
+	outputRaster = r"./newABC2.tif"
+	gdal.Warp(outputRaster,inputRaster,dstSRS='EPSG:4326')
+	valid_image = "./newABC2.tif"
+	with open(valid_image, "rb") as f:
+		print(valid_image)
+		return HttpResponse(f.read(), content_type="image/tiff")
+
+# @csrf_exempt
+def getImageForMap(request):
+	return render(request, 'blog/map.html')

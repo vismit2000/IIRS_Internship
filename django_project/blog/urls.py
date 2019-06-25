@@ -6,4 +6,6 @@ urlpatterns = [
     path('saveMatrix/', views.saveMatrix, name='saveMatrix'),
     # path('upload/', views.upload, name='upload'),     --uncomment for upload functionality
     path('processImages/', views.processImages, name='processImages'),
+    path('getTiff/', views.getTiff, name='getTiff'),
+    path('getImageForMap/', views.getImageForMap, name='getImageForMap'),
 ]

@@ -629,3 +629,14 @@ td.text-right {
 		transform: scale(2);
 	}
 /*========================================Image Popup ends============================================*/
+
+/*========================================Leaflet CSS============================================*/
+#map {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 101010;
+	display: none;
+  }

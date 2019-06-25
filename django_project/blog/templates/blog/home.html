@@ -15,6 +15,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
       <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+      
    </head>
    <body onload="loaded();">
 
@@ -81,15 +82,6 @@
                   <img width="100px" height="66px" id="finalImg" style="display: none;"/>
                </a>
 
-            <!-- ============================Buttons at the top, come one by one========================== -->
-            <div style="margin-top:2vh;margin-bottom:4vh;">
-               <a class="special functionBtn" id="calSumBtn" onclick="calcSum();">Column Sum</a>  
-               <a class="special functionBtn" id='normMatrixBtn' onclick="normalizeMatrix();">Normalize Matrix</a>
-               <a class="special functionBtn" id='rowAvg' onclick="criteriaWeights();">Criteria weights</a>
-               <a class="special functionBtn" id='consistencyCheck' onclick="checkConsistency();">Check Consistency</a>
-               <a class="special functionBtn" id='saveMatrix' onclick="saveMatrix();">Save Matrix</a>
-               <a class="special functionBtn" id='finalImage' onclick="displayFinalImage();">Final Image</a>
-            </div>
             <!-- =======================Container to hold matrix , created dynamically================= -->
             <div style="display: flex; flex-direction:column;">
                <form id="frm"></form>
@@ -101,21 +93,21 @@
                     <div class="billing__main__content__step row">
                         <ul id="step-list">
                             <li class="option active" for="participant-info" data-step="1">
-                                <a href="javascript:void(0)" onclick="displayFunctnBtn(0)" class="functionalityLinks">
+                                <a href="javascript:void(0)" onclick="calcSum()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Calculate Column Sum</p>
                                 </a>
                             </li>
                             <li class="option" for="contact-info" data-step="2">
-                                <a href="javascript:void(0)" onclick="displayFunctnBtn(1)" class="functionalityLinks">
+                                <a href="javascript:void(0)" onclick="normalizeMatrix()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-envelope" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Normalize Matrix</p>
                                 </a>
                             </li>
                             <li class="option" for="extra-info" data-step="3">
-                                <a href="javascript:void(0)" class="functionalityLinks" onclick="displayFunctnBtn(2)">
+                                <a href="javascript:void(0)" class="functionalityLinks" onclick="criteriaWeights()">
                                     <span class="default"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>
@@ -124,21 +116,21 @@
                                 </a>
                             </li>
                             <li class="option" for="payment-info" data-step="4">
-                                <a href="javascript:void(0)" onclick="displayFunctnBtn(3)" class="functionalityLinks">
+                                <a href="javascript:void(0)" onclick="checkConsistency()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Check Consistency</p>
                                 </a>
                             </li>
                             <li class="option" for="congratulations" data-step="5">
-                                <a href="javascript:void(0)" onclick="displayFunctnBtn(4)" style="pointer-events: none" class="functionalityLinks">
+                                <a href="javascript:void(0)" onclick="saveMatrix();" style="pointer-events: none" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-save" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Save Matrix</p>
                                 </a>
                             </li>
                             <li class="option" for="congratulations" data-step="6">
-                                 <a href="javascript:void(0)" onclick="displayFunctnBtn(5)" style="pointer-events: none" class="functionalityLinks">
+                                 <a href="javascript:void(0)" onclick="displayFinalImage();" style="pointer-events: none" class="functionalityLinks">
                                      <span class="default"><i class="fa fa-hand-peace-o" aria-hidden="true"></i></span>
                                      <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                      <p>Display Final Image</p>
@@ -196,12 +188,24 @@
                      </table>                     
             </div>
             <!-- =================================Importance table ends here ================================= -->
+
+            <div id="map">
+            </div>               
       </main>
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
       <script src="{% static 'blog/js/script.js' %}"></script>
+
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://npmcdn.com/leaflet@1.2.0/dist/leaflet.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.0/chroma.min.js"></script>
+      <script src="https://npmcdn.com/geotiff@0.3.6/dist/geotiff.js"></script>
+      <script src="https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/dist/leaflet.canvaslayer.field.js"></script>
+
+      
    </body>
 </html>
