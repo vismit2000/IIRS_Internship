@@ -15,14 +15,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='matrix',
+            name='UserProfile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('upload_date', models.DateTimeField(auto_now_add=True, null=True)),
-                ('numOfDimensions', models.IntegerField()),
-                ('dimensionsString', models.CharField(max_length=1000)),
-                ('entries', models.CharField(max_length=1000)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('upload_date', models.DateTimeField(auto_now_add=True)),
+                ('randomIndex', models.CharField(default="'1':'0.0' '2':'0.0' '3':'0.58' '4':'0.90' '5':'1.12' '6':'1.24' '7':'1.32' '8':'1.41' '9':'1.45' '10':'1.49'", max_length=100)),
+                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

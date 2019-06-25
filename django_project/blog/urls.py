@@ -3,8 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='blog-home'),
-    path('about/', views.about, name='blog-about'),
     path('saveMatrix/', views.saveMatrix, name='saveMatrix'),
-    path('upload/', views.upload, name='upload'),
+    # path('upload/', views.upload, name='upload'),     --uncomment for upload functionality
     path('processImages/', views.processImages, name='processImages'),
 ]

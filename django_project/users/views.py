@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
-from users.models import matrix
+from users.models import *
 
+# Register user
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -17,18 +18,18 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
+# View Profile
 @login_required
 def profile(request):
-    matricesObjects = matrix().__class__.objects.filter(user = request.user)
+    matricesObjects = matrix().__class__.objects.filter(user = request.user)    #get all matrices that refer to current user
     matricesArr = []
+    
     for i in matricesObjects:
         newMatrix = {}
         newMatrix['dimNum'] = i.numOfDimensions
         newMatrix['dimString'] = i.dimensionsString
         newMatrix['entries'] = i.entries
         newMatrix['uploadDate'] = i.upload_date
-        # print(newMatrix)
         matricesArr.append(newMatrix)
-        # print(matricesArr)
-    # print(matricesArr)
+
     return render(request, 'users/profile.html',{'matrixArr':matricesArr})

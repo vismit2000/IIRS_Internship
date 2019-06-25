@@ -1,3 +1,4 @@
+// mapping table forn random index
 const RI = {
     "1" : 0.00,
     "2" : 0.00,
@@ -10,6 +11,7 @@ const RI = {
     "9" : 1.45,
     "10" : 1.49
 };
+
 var userMatrix = [] ;
 function loaded(){
     $("#uploadImagesForm").submit(function(e){

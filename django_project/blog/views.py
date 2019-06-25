@@ -1,67 +1,67 @@
 from .models import *
 from users.models import matrix
-import json
-from django.http import HttpResponse, JsonResponse
+
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.core import serializers
-from django.forms.models import model_to_dict
-import os, sys, time, gdal
+# from django.core import serializers		--uncomment for upload functionality
+
 from gdalconst import *
-import numpy as np
 from osgeo import osr
+
+import json
+import sys, gdal
+import numpy as np
 import base64
 
 
 @login_required
 def home(request):
+	"""
+		view to render home page
+	"""
 	return render(request, 'blog/home.html')
 
 @login_required
-def about(request):
-	return render(request, 'blog/about.html', {'title': 'About'})
-
-@login_required
 def saveMatrix(request):
-	matrixJSON = json.loads( request.body.decode('utf-8'))
-	print(matrixJSON)
+	"""
+		takes the matrix entered by user and stores it in database as a matrix() class object
+	"""
+	matrixJSON = json.loads( request.body.decode('utf-8'))	#load JSON data from frontend
+	# create new matrix object with given details
 	matrixEntry = matrix(numOfDimensions = matrixJSON['numOfDimensions'], dimensionsString = matrixJSON['dimensionsString'], entries = matrixJSON['entries'],user = request.user)
+	# save matrix
 	matrixEntry.save()
 	res = {'error':'noError'}
+	# return json response
 	return JsonResponse(res)
 
-@csrf_exempt
-def upload(request):
-	if request.method=="POST":
-		print(request)
-		# imgs = UploadForm(request.POST, request.FILES)
-		newProfile,created = UserProfile.objects.get_or_create(user = request.user)
-		newProfile.save()
-		print(request.FILES)
-		imgs = request.FILES.getlist('pic')
-		for img in imgs:
-			print(img)
-			newPic = UploadImage(usr_profile = newProfile,image = img)
-			print(newPic)
-			newPic.save()
-			# if img.is_valid():
-				# img.save()
-				# images=Upload.objects.all().order_by('-upload_date')
-		# newProfile.save()
-		print(newProfile)
-		return JsonResponse({'error':'false','message':'Uploaded Successfully'})
-	# else:
-		# img=UploadForm()
-		# print(img)
-	# images=Upload.objects.all().order_by('-upload_date')
-	return JsonResponse({'error':'true','message':'Failed'})
+#------------------------ Uncomment following for upload functionality-----------------------
+
+# @csrf_exempt
+# def upload(request):
+# 	if request.method=="POST":
+# 		print(request)
+# 		newProfile,created = UserProfile.objects.get_or_create(user = request.user)
+# 		newProfile.save()
+# 		print(request.FILES)
+# 		imgs = request.FILES.getlist('pic')
+# 		for img in imgs:
+# 			print(img)
+# 			newPic = UploadImage(usr_profile = newProfile,image = img)
+# 			print(newPic)
+# 			newPic.save()
+# 		print(newProfile)
+# 		return JsonResponse({'error':'false','message':'Uploaded Successfully'})
+# 	return JsonResponse({'error':'true','message':'Failed'})
 
 def processImages(request):
 	if request.method == "POST":
+
+		# --------------------Uncomment following for upload functionality------------------------------
+
 		# usr = request.user
 		# user_profile = UserProfile.objects.get(user = usr)
 		# images = UploadImage.objects.filter(usr_profile = user_profile)
@@ -70,22 +70,19 @@ def processImages(request):
 		# 	file = img
 		# 	print(file.image.url)
 		# 	ds = gdal.Open('.'+file.image.url)
-		# 	band = ds.GetRasterBand(1)
-		# 	arr = band.ReadAsArray()
-		# 	[cols, rows] = arr.shape
-		# 	print(arr.shape)
-		# 	arr_min = arr.min()
-		# 	arr_max = arr.max()
-		# 	arr_mean = int(arr.mean())
-		# 	print([arr_min,arr_max,arr_mean])
-		# 	print(file.image)
+
+
 		gdal.AllRegister()
+
+		# Image URLS on which operations will be performed (Hard coded right now) {Works on 4x4 matrices right now}
 		imagesPaths = ['JHILMIL/Reclass_veg.tif', 'JHILMIL/Reclass_drainage.tif', 'JHILMIL/Reclass_road.tif', 'JHILMIL/Reclass_set.tif']
 		
-
-		resultantArr = []
+		resultantArr = []	#stores final output image as np array
+		
+		# criteria weights vector
 		weight = json.loads(request.body.decode('utf-8'))['valueArr']
-		print(weight)
+		
+		# loop through images and perform operations and save final image
 		for i in range(len(imagesPaths)):
 			# open the image
 			ds = gdal.Open(imagesPaths[i] , GA_ReadOnly)
@@ -100,12 +97,14 @@ def processImages(request):
 				resultantArr = arr
 			else:
 				resultantArr = resultantArr + arr
-		print(resultantArr)
+
+		# save resultant array as tif image using informations from one of input image (Here using last one)
+
 		geotransform = ds.GetGeoTransform()
 		wkt = ds.GetProjection()
 		# Create gtif file
 		driver = gdal.GetDriverByName("GTiff")
-		output_file = "./abc.tif"
+		output_file = "./abc.tif"	#output file location
 		dst_ds = driver.Create(output_file,
 							band.XSize,
 							band.YSize,
@@ -128,7 +127,7 @@ def processImages(request):
 		ds = None
 		dst_ds = None
 
-
+	# 	converting output tiff to jpeg for display purpose
 		options_list = [
 			'-ot Byte',
 			'-of JPEG',
@@ -136,13 +135,14 @@ def processImages(request):
 			'-scale'
 		] 
 		options_string = " ".join(options_list)
-		gdal.Translate('./abc.jpg',
-					output_file,
-					options=options_string)
+		gdal.Translate('./abc.jpg',output_file,options=options_string)
 
+		# send this jpg file to frontend by encoding it
 		output_file2 = './abc.jpg'
+
 		with open(output_file2,mode='rb') as file:
 			img = file.read()
+			
 		data = {'error':'false','array':resultantArr.tolist(),'image':base64.encodebytes(img).decode("utf-8")}
 		print(json.dumps(data))
 		return JsonResponse(data)
