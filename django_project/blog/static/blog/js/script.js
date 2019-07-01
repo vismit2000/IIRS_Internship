@@ -149,9 +149,10 @@ function makeTable(numDiv) {
                 var input = $('<input>').attr({type: 'text' ,
                     class: 'matrix_cell effect-9',
                     id: i + '' + j,
-                    value: 'Class'
+                    value: 'Class',
+                    readOnly: true
                 });
-                input[0].readOnly = true;
+                
                 rowDiv.appendChild(input[0]);
                 continue;
             }
@@ -159,18 +160,20 @@ function makeTable(numDiv) {
                 var input = $('<input>').attr({type: 'text' ,
                     class: 'matrix_cell effect-9',
                     id: i + '' + j,
-                    value: document.getElementsByClassName('dimensions')[j - 1].value
+                    value: document.getElementsByClassName('dimensions')[j - 1].value,
+                    readOnly: true
                 });
-                input[0].readOnly = true;
+                
                 rowDiv.appendChild(input[0]);
                 continue;
             } else if (j == 0 && i != 0 && i != rows - 1) {
                 var input = $('<input>').attr({type: 'text' ,
                     class: 'matrix_cell effect-9',
                     id: i + '' + j,
-                    value: document.getElementsByClassName('dimensions')[i - 1].value
+                    value: document.getElementsByClassName('dimensions')[i - 1].value,
+                    readOnly: true
                 });
-                input[0].readOnly = true;
+                
                 rowDiv.appendChild(input[0]);
                 continue;
             }
@@ -188,8 +191,8 @@ function makeTable(numDiv) {
                 id: i + '' + j,
                 value: a
             });
-            if (i == j)
-                input[0].readOnly = true;
+            // if (i == j)
+                // input[0].readOnly = true;
 
             rowDiv.appendChild(input[0]);
         }
@@ -200,7 +203,7 @@ function makeTable(numDiv) {
         for (let j = 1; j < columns; j++) {
             $('#' + i + '' + j).on('keyup', (e) => {
                 if (e.keyCode == 13) {
-                    console.log('You pressed enter inside elem with id' + i + '' + j);
+                    //  console.log('You pressed enter inside elem with id' + i + '' + j);
                     document.getElementById(j + '' + i).value = (1 / (document.getElementById(i + '' + j).value)).toFixed(3);
                 }
             });
@@ -233,7 +236,6 @@ function getMatrix() {
  * @param {Array} arr array of numbers to be summed up
  */
 function arrSum(arr) {
-    console.log('arrSum called');
     sum = 0;
     for (let i = 0; i < arr.length; i++) {
         sum += arr[i];
@@ -245,9 +247,7 @@ function arrSum(arr) {
  * sums each columns of matrix and displays sum in last row
  */
 const calcSum = () => {
-    console.log('called');
     dimensions = getMatrix();
-    console.log(dimensions);
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];
     arr = [];
@@ -263,14 +263,13 @@ const calcSum = () => {
     for (let j = 1; j < cols; j++) {
         arr = [];
         for (let i = 1; i < rows - 1; i++) {
-            console.log('hi');
             arr.push(Number($('#' + i + '' + j).val()));
         }
         sum = arrSum(arr);
-        console.log(sum);
+        //console.log(sum);
         $('#' + (rows - 1) + '' + j).val(sum);
     }
-    console.log(userMatrix);
+    //console.log(userMatrix);
 };
 
 /**
@@ -304,7 +303,7 @@ const saveMatrix = () => {
         if (i != cols - 1)
             dimensionsString += '$';
     }
-    console.log(dimensionsString);
+    //console.log(dimensionsString);
 
     for (let i = 1; i < rows - 1; i++) {
         for (let j = 1; j < cols; j++) {
@@ -314,7 +313,7 @@ const saveMatrix = () => {
                 entries += ' ';
         }
     }
-    console.log(entries);
+    //console.log(entries);
     data = {};
     data['numOfDimensions'] = numOfDimensions;
     data['dimensionsString'] = dimensionsString;
@@ -389,19 +388,25 @@ function criteriaWeights()
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];   
     rowSum = []   
-    var rowsSumHtml = "<div id='weightDiv' style='position:absolute; top:70vh; left: 40vw;'>";
+    var criteriaWeightsDiv = document.getElementById('criteriaWeightsDiv');
+    criteriaWeightsDiv.innerHTML="";
     for (let i = 1; i < rows - 1; i++) {
+        var innerDiv = document.createElement('div');
+        var rowsSumHtml=document.createElement('input');
         rowSum[i-1] = 0;
         for (let j = 1; j < cols; j++) {
             console.log([i,j,$('#' + i + '' + j).val()]);
             rowSum[i-1] += Number($('#' + i + '' + j).val());    
         }
         rowSum[i-1]/=(cols-1);
-        rowsSumHtml+='<input type="text" class="rowsSumInputs" value="'+rowSum[i-1].toFixed(3)+'" readonly><br>';
+        rowsSumHtml.type="text";
+        rowsSumHtml.classList.add("rowsSumInputs");
+        rowsSumHtml.value=rowSum[i-1].toFixed(3);
+        innerDiv.appendChild(rowsSumHtml);
+        criteriaWeightsDiv.appendChild(innerDiv);
     }
-    rowsSumHtml+="</div>";
+    
     console.log(rowsSumHtml);
-    $('#frm').after(rowsSumHtml);
 }
 
 /**
@@ -539,22 +544,27 @@ function checkConsistency()
         sumArr[i-1]/=weightsArray[i-1];
         x+=sumArr[i-1];
     }   
-
     const lambda = (x/(rows-2)).toFixed(3);
-    console.log(lambda);
+    //console.log(lambda);
     const CI = ((lambda-(rows-2))/((rows-2)-1)).toFixed(3);
-    console.log(CI);
+    //console.log(CI);
     const CR = (CI/RI[rows-2]).toFixed(3);
-    console.log(CR);
+    //console.log(CR);
     if(CR<.1){
         swal("Great!", "Consistency Ratio is = "+CR, "success");
-        let elems =  document.getElementsByClassName('functionalityLinks');
+        let elems =  document.getElementsByClassName('functionalityLinksLI');
         elems[elems.length-1].style.pointerEvents = 'all';
         elems[elems.length-2].style.pointerEvents = 'all';
     }
     else
     {
-        swal("Sorry!", "Consistency Ratio is = "+CR+"!! Please enter values again :(", "error");
+        let elems =  document.getElementsByClassName('functionalityLinksLI');
+        elems[elems.length-1].style.pointerEvents = 'none';
+        elems[elems.length-2].style.pointerEvents = 'none';
+        if(!isNaN(CR))
+            swal("Sorry!", "Consistency Ratio is = "+CR+"!! Please enter values again :(", "error");
+        else
+            swal("Sorry!", "Invalid matrix entries, please enter again", "error");
         for(let i=0; i<userMatrix.length; i++)
         {
             for(let j=0; j<userMatrix[i].length; j++)
@@ -565,7 +575,7 @@ function checkConsistency()
         for(let j=1; j<=userMatrix[0].length; j++)
             $('#'+(userMatrix.length)+''+(j)).val(0);
     }
-    console.log(matrix);
-    console.log(x);
+    //console.log(matrix);
+    //console.log(x);
 }
 

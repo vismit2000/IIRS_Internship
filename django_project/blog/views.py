@@ -109,7 +109,7 @@ def processImages(request):
 							band.XSize,
 							band.YSize,
 							1,
-							gdal.GDT_Byte)
+							gdal.GDT_Float32)
 		
 		new_array = np.array(resultantArr)
 		#setting extension of output raster

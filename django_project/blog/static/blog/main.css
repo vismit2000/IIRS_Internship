@@ -640,3 +640,15 @@ td.text-right {
 	z-index: 101010;
 	display: none;
   }
+
+
+/* body{
+    top: 10vh;
+    position: absolute;
+    left: 0;
+} */
+
+.dates
+{
+	color: whitesmoke
+}

@@ -1,0 +1,55 @@
+<VRTDataset rasterXSize="3114" rasterYSize="2446">
+  <SRS>GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433],AUTHORITY["EPSG","4326"]]</SRS>
+  <GeoTransform> -1.1003879475830449e+02,  1.0730984990733906e-04,  0.0000000000000000e+00,  3.8354029910509254e+01,  0.0000000000000000e+00, -1.0730984990733906e-04</GeoTransform>
+  <Metadata>
+    <MDI key="AREA_OR_POINT">Area</MDI>
+    <MDI key="TIFFTAG_DATETIME">2017:04:01 20:24:57</MDI>
+    <MDI key="TIFFTAG_RESOLUTIONUNIT">2 (pixels/inch)</MDI>
+    <MDI key="TIFFTAG_SOFTWARE">Adobe Photoshop CC (Macintosh)</MDI>
+    <MDI key="TIFFTAG_XRESOLUTION">72</MDI>
+    <MDI key="TIFFTAG_YRESOLUTION">72</MDI>
+  </Metadata>
+  <VRTRasterBand dataType="Byte" band="1">
+    <ColorInterp>Palette</ColorInterp>
+    <ColorTable>
+      <Entry c1="203" c2="0" c3="23" c4="255"/>
+      <Entry c1="131" c2="66" c3="37" c4="255"/>
+      <Entry c1="201" c2="234" c3="157" c4="255"/>
+      <Entry c1="137" c2="51" c3="128" c4="255"/>
+      <Entry c1="255" c2="234" c3="0" c4="255"/>
+      <Entry c1="167" c2="226" c3="226" c4="255"/>
+      <Entry c1="255" c2="184" c3="184" c4="255"/>
+      <Entry c1="218" c2="179" c3="214" c4="255"/>
+      <Entry c1="209" c2="209" c3="209" c4="255"/>
+      <Entry c1="207" c2="164" c3="142" c4="255"/>
+  </ColorTable> 
+
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">output.tif</SourceFilename>
+      <SourceBand>1</SourceBand>
+      <SourceProperties RasterXSize="3114" RasterYSize="2446" DataType="Byte" BlockXSize="3114" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+      <DstRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="2">
+    <ColorInterp>Green</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">output.tif</SourceFilename>
+      <SourceBand>2</SourceBand>
+      <SourceProperties RasterXSize="3114" RasterYSize="2446" DataType="Byte" BlockXSize="3114" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+      <DstRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+    </SimpleSource>
+  </VRTRasterBand>
+  <VRTRasterBand dataType="Byte" band="3">
+    <ColorInterp>Blue</ColorInterp>
+    <SimpleSource>
+      <SourceFilename relativeToVRT="1">output.tif</SourceFilename>
+      <SourceBand>3</SourceBand>
+      <SourceProperties RasterXSize="3114" RasterYSize="2446" DataType="Byte" BlockXSize="3114" BlockYSize="1" />
+      <SrcRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+      <DstRect xOff="0" yOff="0" xSize="3114" ySize="2446" />
+    </SimpleSource>
+  </VRTRasterBand>
+</VRTDataset>

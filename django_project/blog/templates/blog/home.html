@@ -86,27 +86,26 @@
             <div style="display: flex; flex-direction:column;">
                <form id="frm"></form>
             </div>
-            
             <!--=================================Wizard to go step by step=================================  -->
             <div class="container">
                   <div class="col-md-4 col-12">
                     <div class="billing__main__content__step row">
                         <ul id="step-list">
-                            <li class="option active" for="participant-info" data-step="1">
+                            <li class="option functionalityLinksLI active" for="participant-info" data-step="1">
                                 <a href="javascript:void(0)" onclick="calcSum()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Calculate Column Sum</p>
                                 </a>
                             </li>
-                            <li class="option" for="contact-info" data-step="2">
+                            <li class="option functionalityLinksLI" for="contact-info" data-step="2">
                                 <a href="javascript:void(0)" onclick="normalizeMatrix()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-envelope" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Normalize Matrix</p>
                                 </a>
                             </li>
-                            <li class="option" for="extra-info" data-step="3">
+                            <li class="option functionalityLinksLI" for="extra-info" data-step="3">
                                 <a href="javascript:void(0)" class="functionalityLinks" onclick="criteriaWeights()">
                                     <span class="default"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -115,22 +114,22 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="option" for="payment-info" data-step="4">
+                            <li class="option functionalityLinksLI" for="payment-info" data-step="4">
                                 <a href="javascript:void(0)" onclick="checkConsistency()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Check Consistency</p>
                                 </a>
                             </li>
-                            <li class="option" for="congratulations" data-step="5">
-                                <a href="javascript:void(0)" onclick="saveMatrix();" style="pointer-events: none" class="functionalityLinks">
+                            <li class="option functionalityLinksLI" for="congratulations" data-step="5">
+                                <a href="javascript:void(0)" onclick="saveMatrix();"  class="functionalityLinks">
                                     <span class="default"><i class="fa fa-save" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Save Matrix</p>
                                 </a>
                             </li>
-                            <li class="option" for="congratulations" data-step="6">
-                                 <a href="javascript:void(0)" onclick="displayFinalImage();" style="pointer-events: none" class="functionalityLinks">
+                            <li class="option functionalityLinksLI" for="congratulations" data-step="6">
+                                 <a href="javascript:void(0)" onclick="displayFinalImage();"  class="functionalityLinks">
                                      <span class="default"><i class="fa fa-hand-peace-o" aria-hidden="true"></i></span>
                                      <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                      <p>Display Final Image</p>
@@ -142,6 +141,8 @@
             </div>
             <!-- =================================Wizard ends here================================= -->
          </div>
+
+         <div id='criteriaWeightsDiv' style="position: absolute;top:40vh;left:50vw;"></div>
 
          <!-- ================================= Importance table ================================= -->
          <div id="importanceTable" >
