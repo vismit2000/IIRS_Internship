@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 from users.models import *
 
+lastMatrix = None
+
 # Register user
 def register(request):
     if request.method == 'POST':

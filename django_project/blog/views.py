@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 # from django.core import serializers		--uncomment for upload functionality
 
 from gdalconst import *
@@ -124,7 +125,7 @@ def processImages(request):
 		dst_ds.GetRasterBand(1).WriteArray( new_array )
 		#setting nodata value
 		dst_ds.GetRasterBand(1).SetNoDataValue(-9999)
-
+		print(type(dst_ds))
 		#Close output raster dataset
 		ds = None
 		dst_ds = None
@@ -139,8 +140,18 @@ def getTiff(request):
 	valid_image = "./newABC.tif"
 	inputRaster = gdal.Open(valid_image)
 	outputRaster = r"./newABC2.tif"
+
+	# get the last saved matrix (ordered according to date added)
+	latestMatrix = matrix().__class__.objects.latest('upload_date')
+	# print(latestMatrix)
 	gdal.Warp(outputRaster,inputRaster,dstSRS='EPSG:4326')
 	valid_image = "./newABC2.tif"
+	print(latestMatrix.output)
+
+	# open the image and save it in output field of last saved matrix
+	with open(valid_image, "rb") as f:
+		latestMatrix.output.save(outputRaster,f)
+	
 	with open(valid_image, "rb") as f:
 		print(valid_image)
 		return HttpResponse(f.read(), content_type="image/tiff")
