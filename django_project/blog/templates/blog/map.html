@@ -16,6 +16,19 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
       <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+      <style>
+         #floating-panel{
+            background: black;
+            color: white;
+            position: absolute;
+            bottom: 10vh;
+            right: 10vw;
+            z-index: 10000000000000000000000000;
+         }
+         #floating-panel>ul>li>select{
+            color: black;
+         }
+      </style>
    </head>
    <body onload="displayTiff();">
 
@@ -47,7 +60,41 @@
 
       <main role="main" class="container">
             <div id="map">
-            </div>               
+            </div>        
+            <div id="floating-panel">
+               <ul>
+                   <li id="gradientPanel">
+                       <label>Gradient</label>
+                       <input type="color" id="lowColor" value="#FFFFFF">
+                       <input type="color" id="highColor" value="#000000">
+                   </li>
+       
+                   <li id="colorBrewerPanel" style="display:none;">
+                       <label>Palettes</label>
+                       <!-- some color scales... (for a full list see: https://github.com/gka/chroma.js/wiki/Predefined-Colors) -->
+                       <select id="colorBrewer">
+                           <option>OrRd</option>
+                           <option>PuBu</option>
+                           <option>BuPu</option>
+                           <option>Oranges</option>
+                           <option>RdPu</option>
+                           <option>YlGnBu</option>
+                           <option>GnBu</option>
+                           <option>PuRd</option>
+                           <option>PuBuGn</option>
+                           <option>Spectral</option>
+                           <option>RdYlGn</option>
+                           <option>PiYG</option>
+                           <option>Paired</option>
+                       </select>
+                   </li>
+       
+                   <!-- <li id="classesPanel" style="display:none;">
+                       <label>Nº classes</label>
+                       <input id="classes" type="text" value="4" style="width: 5vw">
+                   </li> -->
+               </ul>
+           </div>              
       </main>
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -77,6 +124,7 @@
                     fetch(tiff).then(r => r.arrayBuffer()).then(function(buffer) {
                     document.getElementById('map').style.display='block';
                     var s = L.ScalarField.fromGeoTIFF(buffer);
+                    console.log(s.range);
                     let layer = L.canvasLayer.scalarField(s).addTo(map);
                     layer.on("click", function(e) {
                         if (e.value !== null) {
@@ -86,10 +134,75 @@
                         .openOn(map);
                         }
                     });
+                    var layer1 = L.canvasLayer.scalarField(s, {
+                        color: chroma.scale(['white', 'black']).domain(s.range),
+                        mouseMoveCursor: null
+                     }).addTo(map);
+                     map.fitBounds(layer1.getBounds());
+
+                     var layer2 = L.canvasLayer.scalarField(s, {
+                        color: chroma.scale('OrRd').domain(s.range),
+                        mouseMoveCursor: null
+                     });
+
+                     // var layer3 = L.canvasLayer.scalarField(s, {
+                     //    color: chroma.scale('OrRd').classes(5),
+                     //    mouseMoveCursor: null
+                     // });
+
+                     var layers = {
+                        'Two colors gradient': layer1,
+                        'ColorBrewer2': layer2,
+                        // 'Classes (n-equidistant)': layer3
+                     };
+
+                     L.control.layers(layers, {}, {
+                        position: 'bottomleft',
+                        collapsed: false
+                     }).addTo(map);
+                              /* Dynamic styles */
+                     //      gradient with two colors
+                     let gradientColors = document.getElementsByTagName('input[type=color]');
+                     let low = document.getElementById('lowColor');
+                     let high = document.getElementById('highColor');
+                     var updateGradient = function () {
+                        var scale = chroma.scale([low.value, high.value]).domain(s.range);
+                        layer1.setColor(scale);
+                     }
+                     low.addEventListener('input', updateGradient);
+                     high.addEventListener('input', updateGradient);
+
+                     //      colorBrewer scale
+                     let colorBrewer = document.getElementById('colorBrewer');
+                     colorBrewer.addEventListener('change', function () {
+                        var scale = chroma.scale(this.value).domain(s.range);
+                        layer2.setColor(scale);
+                     });
+
+                     // //      classes
+                     // let classes = document.getElementById("classes");
+                     // classes.addEventListener("change", function () {
+                     //    console.log(this.value);
+                     //    var scale = chroma.scale('OrRd').classes(parseInt(this.value));
+                     //    console.log(scale);
+                     //    layer3.setColor(scale);
+                     //    console.log(layer3);
+                     // });
+
+                     //      enable panels
+                     map.on('baselayerchange', function (e) {
+                        let gradientPanel = document.getElementById('gradientPanel');
+                        gradientPanel.style.display = (e.layer === layer1) ? "block" : "none";
+
+                        let colorBrewerPanel = document.getElementById('colorBrewerPanel');
+                        colorBrewerPanel.style.display = (e.layer === layer2) ? "block" : "none";
+
+                        // let classesPanel = document.getElementById('classesPanel');
+                        // classesPanel.style.display = (e.layer === layer3) ? "block" : "none";
+                     });
 
                     map.fitBounds(layer.getBounds());
                     });
-                
             }
       </script>
    </body>

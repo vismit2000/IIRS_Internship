@@ -576,7 +576,7 @@ td.text-right {
   }
   /* ---------------------------------------------- Loader Css Ends--------------------------------------*/
 
-  input[type="text"] {
+  input[type="text"],input[type="number"] {
 	width: 100%;
 	border: 2px solid #aaa;
 	border-radius: 4px;
@@ -587,7 +587,7 @@ td.text-right {
 	color: black;
   }
   
-  input[type="text"]:focus {
+  input[type="text"]:focus,input[type="number"]:focus {
 	border-color: dodgerBlue;
 	box-shadow: 0 0 8px 0 dodgerBlue;
   }
@@ -651,4 +651,17 @@ td.text-right {
 .dates
 {
 	color: whitesmoke
+}
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#consistencyValueDiv
+{
+	position: absolute;
+	top: 60vh;
+	left: 60vw;
+	font-size:3vh;
 }

@@ -121,8 +121,9 @@ function displayDimensions() {
 
     var dimInput = document.getElementById('dimensionsValue');
     var numDim = dimInput.value;
+    let dimensionsValues = ['Vegetation', 'Drainage', 'Road', 'Settlement'];
     for (var i = 0; i < numDim; i++) {
-        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" id="div' + (i + 1) + '"></div>');
+        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="'+dimensionsValues[i]+'" id="div' + (i + 1) + '"></div>');
     }
 
     $('#paramDiv').append('<div class="submitDimDiv"><a href="javascript:void(0)" onclick="makeTable(' + numDim + ');" class="dimSubmitBtn special">Submit Dimensions</a></div>');
@@ -133,6 +134,30 @@ function displayDimensions() {
  * @param {integer} numDiv - number of dimensions user entered
  */
 function makeTable(numDiv) {
+    let dimDivs = document.getElementsByClassName('dimDiv');    
+    let numDim = dimDivs.length + 1;
+    userMatrix = new Array(numDim);
+    for(let i=0; i<numDim; i++)
+    {
+        userMatrix[i] = new Array(numDim);
+    }
+    userMatrix[0][0] = "Class";
+    for(let j=1; j<numDim; j++)
+    {
+        userMatrix[0][j] = dimDivs[j-1].children[0].value;
+        userMatrix[j][0] = dimDivs[j-1].children[0].value;
+    }
+    for(let i=1; i<numDim; i++)
+    {
+        for(let j=1; j<numDim; j++)
+        {
+            if(i==j)
+                userMatrix[i][j] = 1;
+            else
+                userMatrix[i][j] = 0;
+        }
+    }
+
     document.getElementById('paramDiv').style.display = 'none';
     document.getElementById('matrix').style.display = 'flex';
     document.getElementById('importanceTable').style.display = "block";
@@ -186,7 +211,7 @@ function makeTable(numDiv) {
             if((i == rows-1) && (j == 0))
                 a = 'sum';
 
-            var input = $('<input>').attr({type: 'text' ,
+            var input = $('<input>').attr({type: 'number' ,
                 class: 'matrix_cell effect-9',
                 id: i + '' + j,
                 value: a
@@ -209,6 +234,27 @@ function makeTable(numDiv) {
             });
         }
     }
+
+
+
+    let inputs = document.getElementsByClassName('matrix_cell');
+    for(let i=0; i<inputs.length; i++)
+    {
+        console.log(i);
+        console.log(inputs[i]);        
+        if(inputs[i].type === "number")
+        {
+            inputs[i].max = 9;
+            inputs[i].min = 0;
+            inputs[i].oninput = function () {
+                var max = parseInt(this.max);
+                if (parseInt(this.value) > max) {
+                    swal("Sorry!", "Please enter a value between 0-9", "error");
+                    this.value = "";
+                }
+            }
+        }        
+    }    
 }
 
 /**
@@ -552,6 +598,9 @@ function checkConsistency()
     //console.log(CR);
     if(CR<.1){
         swal("Great!", "Consistency Ratio is = "+CR, "success");
+        document.getElementById("consistencyValue").innerHTML="";
+        document.getElementById("consistencyValue").innerHTML="Consistency Ratio = Consistency Index (CI) / Random Index (RI)";
+        document.getElementById("consistencyValue").innerHTML+="<br><br>Consistency Ratio is "+CR;
         let elems =  document.getElementsByClassName('functionalityLinksLI');
         elems[elems.length-1].style.pointerEvents = 'all';
         elems[elems.length-2].style.pointerEvents = 'all';
@@ -579,3 +628,14 @@ function checkConsistency()
     //console.log(x);
 }
 
+function initializeMatrix()
+{
+    dimensions = getMatrix();
+    rows = dimensions['rowNum']-1;
+    cols = dimensions['colNum'];
+    for (let i = 0; i < rows ; i++) {
+        for (let j = 0; j < cols; j++) {
+            $('#'+i+''+j).val(userMatrix[i][j]);
+        }   
+    }   
+}

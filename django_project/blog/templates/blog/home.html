@@ -62,7 +62,7 @@
 
          <!-- First page after login -->
          <div id="paramDiv" style="position: absolute;top:35vh;left:40vw;display:block;"> 
-            Number of Parameters: <input type="text" name="parameters" id="dimensionsValue">
+            Number of Parameters: <input type="text" name="parameters" value="4" id="dimensionsValue">
             <a id="dimensionsBtn" onclick="displayDimensions();" class="special" >Enter Dimensions</a>
       
             <!-- =========================== Uncomment for upload image functionality=============================-->
@@ -85,27 +85,35 @@
             <!-- =======================Container to hold matrix , created dynamically================= -->
             <div style="display: flex; flex-direction:column;">
                <form id="frm"></form>
+               <div id="consistencyValueDiv"><p id="consistencyValue" style="color: white"></p></div>
             </div>
             <!--=================================Wizard to go step by step=================================  -->
             <div class="container">
                   <div class="col-md-4 col-12">
                     <div class="billing__main__content__step row">
                         <ul id="step-list">
-                            <li class="option functionalityLinksLI active" for="participant-info" data-step="1">
+                              <li class="option functionalityLinksLI active" for="participant-info" data-step="1">
+                                    <a href="javascript:void(0)" onclick="initializeMatrix()" class="functionalityLinks">
+                                        <span class="default"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
+                                        <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
+                                        <p>Enter values</p>
+                                    </a>
+                                </li>
+                            <li class="option functionalityLinksLI" for="participant-info" data-step="2">
                                 <a href="javascript:void(0)" onclick="calcSum()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-plus-square" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Calculate Column Sum</p>
                                 </a>
                             </li>
-                            <li class="option functionalityLinksLI" for="contact-info" data-step="2">
+                            <li class="option functionalityLinksLI" for="contact-info" data-step="3">
                                 <a href="javascript:void(0)" onclick="normalizeMatrix()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-envelope" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Normalize Matrix</p>
                                 </a>
                             </li>
-                            <li class="option functionalityLinksLI" for="extra-info" data-step="3">
+                            <li class="option functionalityLinksLI" for="extra-info" data-step="4">
                                 <a href="javascript:void(0)" class="functionalityLinks" onclick="criteriaWeights()">
                                     <span class="default"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -114,21 +122,21 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="option functionalityLinksLI" for="payment-info" data-step="4">
+                            <li class="option functionalityLinksLI" for="payment-info" data-step="5">
                                 <a href="javascript:void(0)" onclick="checkConsistency()" class="functionalityLinks">
                                     <span class="default"><i class="fa fa-" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Check Consistency</p>
                                 </a>
                             </li>
-                            <li class="option functionalityLinksLI" for="congratulations" data-step="5">
+                            <li class="option functionalityLinksLI" for="congratulations" data-step="6">
                                 <a href="javascript:void(0)" onclick="saveMatrix();"  class="functionalityLinks">
                                     <span class="default"><i class="fa fa-save" aria-hidden="true"></i></span>
                                     <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
                                     <p>Save Matrix</p>
                                 </a>
                             </li>
-                            <li class="option functionalityLinksLI" for="congratulations" data-step="6">
+                            <li class="option functionalityLinksLI" for="congratulations" data-step="7">
                                  <a href="javascript:void(0)" onclick="displayFinalImage();"  class="functionalityLinks">
                                      <span class="default"><i class="fa fa-hand-peace-o" aria-hidden="true"></i></span>
                                      <span class="done-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
@@ -142,7 +150,7 @@
             <!-- =================================Wizard ends here================================= -->
          </div>
 
-         <div id='criteriaWeightsDiv' style="position: absolute;top:40vh;left:50vw;"></div>
+         <div id='criteriaWeightsDiv' style="position: absolute;top:12vh;left:82vw;"></div>
 
          <!-- ================================= Importance table ================================= -->
          <div id="importanceTable" >
