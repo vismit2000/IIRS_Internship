@@ -123,7 +123,10 @@ function displayDimensions() {
     var numDim = dimInput.value;
     let dimensionsValues = ['Vegetation', 'Drainage', 'Road', 'Settlement'];
     for (var i = 0; i < numDim; i++) {
-        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="'+dimensionsValues[i]+'" id="div' + (i + 1) + '"></div>');
+        if(i < dimensionsValues.length)
+            $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="'+dimensionsValues[i]+'" id="div' + (i + 1) + '"></div>');
+        else
+        $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="" id="div' + (i + 1) + '"></div>');
     }
 
     $('#paramDiv').append('<div class="submitDimDiv"><a href="javascript:void(0)" onclick="makeTable(' + numDim + ');" class="dimSubmitBtn special">Submit Dimensions</a></div>');
