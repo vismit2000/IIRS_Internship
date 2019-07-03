@@ -1,5 +1,10 @@
 # IIRS_Internship
 
+Admin details :
+
+** Username : vishal
+** Password : Vishal@2000
+
 Web-based spatial decision support system using multi-criteria analysis (AHP)
 
 git clone --single-branch --branch <branchname> host:/dir.git
