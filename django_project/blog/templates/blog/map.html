@@ -126,6 +126,7 @@
                     var s = L.ScalarField.fromGeoTIFF(buffer);
                     console.log(s.range);
                     let layer = L.canvasLayer.scalarField(s).addTo(map);
+
                     layer.on("click", function(e) {
                         if (e.value !== null) {
                         let popup = L.popup()
@@ -134,6 +135,8 @@
                         .openOn(map);
                         }
                     });
+
+                    
                     var layer1 = L.canvasLayer.scalarField(s, {
                         color: chroma.scale(['white', 'black']).domain(s.range),
                         mouseMoveCursor: null

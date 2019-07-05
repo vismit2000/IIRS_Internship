@@ -17,6 +17,7 @@ import sys, gdal
 import numpy as np
 import base64
 
+np.set_printoptions(threshold=sys.maxsize)
 
 @login_required
 def home(request):
@@ -32,7 +33,7 @@ def saveMatrix(request):
 	"""
 	matrixJSON = json.loads( request.body.decode('utf-8'))	#load JSON data from frontend
 	# create new matrix object with given details
-	matrixEntry = matrix(numOfDimensions = matrixJSON['numOfDimensions'], dimensionsString = matrixJSON['dimensionsString'], entries = matrixJSON['entries'],user = request.user)
+	matrixEntry = matrix(numOfDimensions = matrixJSON['numOfDimensions'], dimensionsString = matrixJSON['dimensionsString'], entries = matrixJSON['entries'],user = request.user,dimensionsMapping = matrixJSON['mappedDimensionsString'])
 	# save matrix
 	matrixEntry.save()
 	res = {'error':'noError'}
@@ -75,9 +76,24 @@ def processImages(request):
 
 		gdal.AllRegister()
 
+		latestMatrix = matrix().__class__.objects.latest('upload_date')
+		mappedDimensionsString = latestMatrix.dimensionsMapping
+		arr1 = mappedDimensionsString.split('#')		
+		mappedDimArr = []
+		arr1.pop()
+		for i in range(len(arr1)):
+			arr2 = arr1[i].split(' ')
+			arr2.pop()
+			mappedDimArr.append(arr2)
+			print(arr2)
+		print(mappedDimArr)
+
+
 		# Image URLS on which operations will be performed (Hard coded right now) {Works on 4x4 matrices right now}
-		imagesPaths = ['JHILMIL/Reclass_veg.tif', 'JHILMIL/Reclass_drainage.tif', 'JHILMIL/Reclass_road.tif', 'JHILMIL/Reclass_set.tif']
-		
+		imagesPaths = ['Jhilmil_Jheel Data/Jhilmil_Jheel_Normal_RASTER_data/veg_fin_15km_raster.tif', 'Jhilmil_Jheel Data/Jhilmil_Jheel_Normal_RASTER_data/drainage_EucDist_raster.tif', 'Jhilmil_Jheel Data/Jhilmil_Jheel_Normal_RASTER_data/road_EucDist_raster.tif', 'Jhilmil_Jheel Data/Jhilmil_Jheel_Normal_RASTER_data/settlement_EucDist_raster.tif']
+
+
+
 		resultantArr = []	#stores final output image as np array
 		
 		# criteria weights vector
@@ -86,13 +102,30 @@ def processImages(request):
 		# loop through images and perform operations and save final image
 		for i in range(len(imagesPaths)):
 			# open the image
-			ds = gdal.Open(imagesPaths[i] , GA_ReadOnly)
+			ds = gdal.Open(imagesPaths[i])
 			if ds is None:
 				print ('Could not open image')
 				sys.exit(1)
 
 			band = ds.GetRasterBand(1)
 			arr = band.ReadAsArray()
+			
+			# arr is numpy array for normal image let;'s reclassify it b4 performing operations
+			# mappedDimArr[i] represent's ith image parameters to be mapped
+			if i == 0:
+				# print('before transforming , i=0')
+				# print(arr[:10][:10])
+				for j in range(len(mappedDimArr[i])):
+					arr[arr == j+1] = mappedDimArr[i][j]
+				# print('after transforming , i=0')
+				# print(arr[:10][:10])
+			else:
+				for j in range(len(mappedDimArr[i])):
+					# arr[arr >= (1000*j) and arr < (1000*j+1000) ] = mappedDimArr[i][j]
+					arr[np.logical_and(arr >= (1000*j), arr < (1000*j+1000))] = mappedDimArr[i][j]
+
+			# print(arr)
+			
 			arr = arr * float(weight[i])
 			if i==0:
 				resultantArr = arr

@@ -11,6 +11,10 @@
   * uploadDate - date of matrix upload (in UTC format)
   * 
   */
+    // function displayImageForMatrix(date)
+    // {
+
+    // }
     function makeTable(dimNum,dimString,entry,uploadDate) 
     {
         let dimensions = dimString.split('$');
@@ -58,11 +62,18 @@
             var br = $('<br>')[0];
             
             //create a container to hold date value
-            dateDiv = document.createElement('div');
-            datePara = document.createElement('p');
+            var dateDiv = document.createElement('div');
+            var datePara = document.createElement('p');
             datePara.classList.add('dates');
+            
+
+//===============================Image Links beside matrices=====================================
+            // var imageButton = document.createElement('button');
+            // imageButton.onclick = displayImageForMatrix(uploadDate);
+            
             //add date to a para and append it to container
             datePara.innerHTML = uploadDate;
+
             dateDiv.appendChild(datePara);
             //append container to body
             document.body.append(dateDiv);

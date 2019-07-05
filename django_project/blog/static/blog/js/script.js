@@ -1,4 +1,3 @@
-
 // mapping table forn random index
 const RI = {
     "1" : 0.00,
@@ -12,6 +11,9 @@ const RI = {
     "9" : 1.45,
     "10" : 1.49
 };
+
+var mappedDimensions = [];
+var currDimensionNum = 0;
 
 var userMatrix = [] ;   //global variable to store user's initial input matrix
 
@@ -124,12 +126,15 @@ function displayDimensions() {
     let dimensionsValues = ['Vegetation', 'Drainage', 'Road', 'Settlement'];
     for (var i = 0; i < numDim; i++) {
         if(i < dimensionsValues.length)
-            $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="'+dimensionsValues[i]+'" id="div' + (i + 1) + '"></div>');
+            $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="'+dimensionsValues[i]+'" id="div' + (i + 1) + '"><a class="special myModalLink" onclick="selectRanges('+(i)+')">Select Ranges</a></div>');
         else
         $('#paramDiv').append('<div class="dimDiv"><input type="text" class="dimensions" value="" id="div' + (i + 1) + '"></div>');
     }
 
     $('#paramDiv').append('<div class="submitDimDiv"><a href="javascript:void(0)" onclick="makeTable(' + numDim + ');" class="dimSubmitBtn special">Submit Dimensions</a></div>');
+
+    //=====================================Create mapped dimension matrix with number of rows = num of dims================
+    mappedDimensions = new Array(numDim);
 }
 
 /**
@@ -212,7 +217,16 @@ function makeTable(numDiv) {
                 a = 0;
 
             if((i == rows-1) && (j == 0))
-                a = 'sum';
+            {
+                var input = $('<input>').attr({type: 'text' ,
+                    class: 'matrix_cell effect-9',
+                    id: i + '' + j,
+                    value: 'Sum',
+                    readOnly: true
+                });
+                rowDiv.appendChild(input[0]);
+                continue;
+            }
 
             var input = $('<input>').attr({type: 'number' ,
                 class: 'matrix_cell effect-9',
@@ -345,6 +359,20 @@ const saveMatrix = () => {
     cols = dimensions['colNum'];
     numOfDimensions = dimensions['rowNum'] - 2;
     dimensionsString = '';
+    mappedDimensionsString = '';
+
+    for(let i=0; i<numOfDimensions; i++)
+    {
+        for(let j=0; j<mappedDimensions['dimension'+i].length; j++)
+        {
+            mappedDimensionsString+=mappedDimensions['dimension'+i][j];
+            mappedDimensionsString+=" ";
+        }
+        mappedDimensionsString+="#";
+    }
+
+    console.log(mappedDimensionsString);
+
     entries = '';
     for (let i = 1; i < cols; i++) {
         dimensionsString += $('#' + 0 + '' + i).val();
@@ -367,6 +395,7 @@ const saveMatrix = () => {
     data['numOfDimensions'] = numOfDimensions;
     data['dimensionsString'] = dimensionsString;
     data['entries'] = entries;
+    data['mappedDimensionsString'] = mappedDimensionsString;
 
     sendRequest('saveMatrix/', 'POST', JSON.stringify(data));
 };
@@ -641,4 +670,165 @@ function initializeMatrix()
             $('#'+i+''+j).val(userMatrix[i][j]);
         }   
     }   
+}
+
+function selectRanges(dimensionNum)
+{
+    currDimensionNum = dimensionNum;
+    let texts= [
+        [
+            [["Khair plantation",3],["Grassland",2]],
+            [["Scrub",3], ["Moist deciduous forest",3]],
+            [["Khair-Shisham Forest",3],["Waterbody",3]],
+            [["Eucalyptus",3],["Riverbed",3]],
+            [["Teak plantation",4],["Mixed plantation",3]],
+            [["Agriculture-I",3],["Settlement",4]],
+            [["Orchard",4], ["Forest depot",4]],
+            [["Shisham plantation",3], ["Canal",4]],
+            [["Wetland",1], ["Agriculture-II",1]]
+        ],
+        [
+            [["< 1000",1], ["1000 - 2000",2]],
+            [["2000 - 3000",3],["3000 - 4000",4]]
+        ],
+        [
+            [["< 1000",4], ["1000 - 2000",3]],
+            [["2000 - 3000",2],["3000 - 4000",1]]
+        ],
+        [
+            [["< 1000",4], ["1000 - 2000",3]],
+            [["2000 - 3000",2],["3000 - 4000",1]]
+        ]
+    ];
+    
+    let headings = [
+        ["Vegetation Type","Habitat Quality Rating(HQR)"],
+        ["Distance to drainage(in m)","Habitat Quality Rating(HQR)"],
+        ["Distance to road(in m)","Habitat Quality Rating(HQR)"],
+        ["Distance to settlement(in m)","Habitat Quality Rating(HQR)"]
+    ];
+
+    console.log('hi');
+    document.getElementsByClassName('myModal')[0].classList.toggle('is-visible');
+    console.log(dimensionNum);
+    let numOfRows = 0;
+    let numOfCols = 0;
+    let rangeInputMatrix = null;
+    // 0 => Vegetation, 1 => Drainage , 2 => Road, 3 => Settlement
+    switch (dimensionNum) {
+        case 0:
+        case "0":
+            numOfRows = 9;
+            numOfCols = 2;
+        break;
+        
+        case 1:
+        case "1":
+            numOfRows = 2;
+            numOfCols = 2;
+            console.log(11111);
+        break;
+
+        case 2:
+        case "2":
+            numOfRows = 2;
+            numOfCols = 2;
+            console.log(22222);
+        break;
+
+        case 3:
+        case "3":
+            numOfRows = 2;
+            numOfCols = 2;
+            console.log(33333);
+        break;
+
+        default:
+            numOfRows = 0;
+            numOfCols = 0;
+        break;
+    }
+
+    rangeInputMatrix = new Array(numOfRows);
+            for(let i=0; i<numOfRows; i++)
+            {
+                rangeInputMatrix[i] = new Array(numOfCols);
+                for(let j=0; j<numOfCols; j++)
+                {
+                    rangeInputMatrix[i][j] = texts[dimensionNum][i][j];
+                }
+            }
+
+    var elements = document.getElementsByClassName("rangeInput");
+    while (elements[0]) {
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+    let submitBtn = null;
+    for(let i=0; i<numOfRows; i++)
+    {
+        row = document.createElement('div');
+        for(let j=0; j<numOfCols; j++)
+        {
+            colHead = document.createElement('input');
+            colHead.type="text";
+            colHead.readOnly=true;
+            colHead.value = rangeInputMatrix[i][j][0];
+            colHead.classList.add('rangeInput');            
+
+            colInput = document.createElement('input');
+            colInput.type="number";
+            colInput.min=1;
+            colInput.max = 9;
+            colInput.value = rangeInputMatrix[i][j][1];
+            // colInput.value=0;
+            colInput.classList.add('rangeInput');
+            colInput.classList.add('rangeInputBox');
+            colInput.classList.add('dimension'+dimensionNum);
+            // console.log('col',colInput);
+            row.appendChild(colHead);
+            row.appendChild(colInput);
+        }
+        submitBtn = document.getElementsByClassName('myModal-toggle')[2];
+        if(i == 0)
+        {
+            headingRow = document.createElement('div');
+            colHeading = document.createElement('input');
+            colHeading.type="text";
+            colHeading.readOnly=true;
+            colHeading.value = headings[dimensionNum][0];
+            colHeading.classList.add('rangeInput');    
+            colHeading.classList.add('headings');
+            colInputHeading = document.createElement('input');
+            colInputHeading.classList.add('headings');
+            colInputHeading.type="text";
+            colInputHeading.value = headings[dimensionNum][1];
+            // colInput.value=0;
+            colInputHeading.classList.add('rangeInput');
+
+            // console.log('col',colInput);
+            headingRow.appendChild(colHeading);
+            headingRow.appendChild(colInputHeading);
+            submitBtn.parentNode.insertBefore(headingRow,submitBtn);
+        }
+        submitBtn.parentNode.insertBefore(row,submitBtn);
+    }
+}
+
+function saveDimensions(dimensionNum)
+{
+    mappedDimensions[dimensionNum] = [];
+    colInput = document.getElementsByClassName(dimensionNum);
+    // console.log(colInput);
+    for(let i=0; i<colInput.length; i++)
+    {
+        // console.log(colInput[i].value);
+        mappedDimensions[dimensionNum].push(colInput[i].value);
+    }
+    // console.log(mappedDimensions[dimensionNum]);
+}
+
+function toggleModal()
+{
+    document.getElementById('my-modal').classList.toggle('is-visible');
+    saveDimensions('dimension'+currDimensionNum);
 }
