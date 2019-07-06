@@ -257,8 +257,8 @@ function makeTable(numDiv) {
     let inputs = document.getElementsByClassName('matrix_cell');
     for(let i=0; i<inputs.length; i++)
     {
-        console.log(i);
-        console.log(inputs[i]);        
+        // console.log(i);
+        // console.log(inputs[i]);        
         if(inputs[i].type === "number")
         {
             inputs[i].max = 9;
@@ -371,7 +371,7 @@ const saveMatrix = () => {
         mappedDimensionsString+="#";
     }
 
-    console.log(mappedDimensionsString);
+    // console.log(mappedDimensionsString);
 
     entries = '';
     for (let i = 1; i < cols; i++) {
@@ -473,7 +473,7 @@ function criteriaWeights()
         var rowsSumHtml=document.createElement('input');
         rowSum[i-1] = 0;
         for (let j = 1; j < cols; j++) {
-            console.log([i,j,$('#' + i + '' + j).val()]);
+            // console.log([i,j,$('#' + i + '' + j).val()]);
             rowSum[i-1] += Number($('#' + i + '' + j).val());    
         }
         rowSum[i-1]/=(cols-1);
@@ -484,7 +484,7 @@ function criteriaWeights()
         criteriaWeightsDiv.appendChild(innerDiv);
     }
     
-    console.log(rowsSumHtml);
+    // console.log(rowsSumHtml);
 }
 
 /**
@@ -589,7 +589,7 @@ function displayFunctnBtn(val)
  */
 function checkConsistency()
 {
-    console.log(userMatrix);
+    // console.log(userMatrix);
     dimensions = getMatrix();
     rows = dimensions['rowNum'];
     cols = dimensions['colNum'];
@@ -674,6 +674,7 @@ function initializeMatrix()
 
 function selectRanges(dimensionNum)
 {
+    document.getElementById('hqrTable').style.display = "block";
     currDimensionNum = dimensionNum;
     let texts= [
         [
@@ -708,9 +709,9 @@ function selectRanges(dimensionNum)
         ["Distance to settlement(in m)","Habitat Quality Rating(HQR)"]
     ];
 
-    console.log('hi');
+    // console.log('hi');
     document.getElementsByClassName('myModal')[0].classList.toggle('is-visible');
-    console.log(dimensionNum);
+    // console.log(dimensionNum);
     let numOfRows = 0;
     let numOfCols = 0;
     let rangeInputMatrix = null;
@@ -726,21 +727,21 @@ function selectRanges(dimensionNum)
         case "1":
             numOfRows = 2;
             numOfCols = 2;
-            console.log(11111);
+            // console.log(11111);
         break;
 
         case 2:
         case "2":
             numOfRows = 2;
             numOfCols = 2;
-            console.log(22222);
+            // console.log(22222);
         break;
 
         case 3:
         case "3":
             numOfRows = 2;
             numOfCols = 2;
-            console.log(33333);
+            // console.log(33333);
         break;
 
         default:
@@ -778,8 +779,15 @@ function selectRanges(dimensionNum)
             colInput = document.createElement('input');
             colInput.type="number";
             colInput.min=1;
-            colInput.max = 9;
+            colInput.max = 4 ;
             colInput.value = rangeInputMatrix[i][j][1];
+            colInput.oninput = function () {
+                var max = parseInt(this.max);
+                if ((parseInt(this.value) > colInput.max) || (parseInt(this.value) < colInput.min)){
+                    swal("Sorry!", "Please enter a value between 1-4", "error");
+                    this.value = "";
+                }
+            }
             // colInput.value=0;
             colInput.classList.add('rangeInput');
             colInput.classList.add('rangeInputBox');
@@ -829,6 +837,7 @@ function saveDimensions(dimensionNum)
 
 function toggleModal()
 {
+    document.getElementById('hqrTable').style.display = "none";
     document.getElementById('my-modal').classList.toggle('is-visible');
     saveDimensions('dimension'+currDimensionNum);
 }

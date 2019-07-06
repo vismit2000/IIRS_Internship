@@ -111,16 +111,17 @@ body {
 
 #importanceTable {
 	position: absolute;
-	/* position: fixed; */
-	/* top: 40vh; */
 	right: 5vw;
-	/* top: 40vh; */
 	bottom: 0;
 	display: none;
-	/* color: white; */
-	/* font-size: 20px; */
 }
-
+#hqrTable{
+	position: absolute;
+	right: 20vw;
+	bottom: 10vh;
+	display: none;
+	z-index:10000000;
+}
 
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
@@ -714,7 +715,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 .myModal-wrapper {
   position: absolute;
   z-index: 9999;
-  top: 6em;
+  top: 1vh;
   left: 50%;
   width: 32em;
   margin-left: -16em;

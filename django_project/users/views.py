@@ -32,6 +32,7 @@ def profile(request):
         newMatrix['dimString'] = i.dimensionsString
         newMatrix['entries'] = i.entries
         newMatrix['uploadDate'] = i.upload_date
+        newMatrix['output'] = i.output
         matricesArr.append(newMatrix)
 
     return render(request, 'users/profile.html',{'matrixArr':matricesArr})

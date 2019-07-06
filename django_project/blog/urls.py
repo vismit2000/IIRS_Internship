@@ -8,4 +8,5 @@ urlpatterns = [
     path('processImages/', views.processImages, name='processImages'),
     path('getTiff/', views.getTiff, name='getTiff'),
     path('getImageForMap/', views.getImageForMap, name='getImageForMap'),
+    path('getImageForMapInProfile/', views.getImageForMapInProfile, name='getImageForMapInProfile'),
 ]

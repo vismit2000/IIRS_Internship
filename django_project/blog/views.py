@@ -110,7 +110,7 @@ def processImages(request):
 			band = ds.GetRasterBand(1)
 			arr = band.ReadAsArray()
 			
-			# arr is numpy array for normal image let;'s reclassify it b4 performing operations
+			# arr is numpy array for normal image let's reclassify it before performing operations
 			# mappedDimArr[i] represent's ith image parameters to be mapped
 			if i == 0:
 				# print('before transforming , i=0')
@@ -170,25 +170,48 @@ def processImages(request):
 
 @csrf_exempt
 def getTiff(request):
-	valid_image = "./newABC.tif"
-	inputRaster = gdal.Open(valid_image)
-	outputRaster = r"./newABC2.tif"
+	data = json.loads( request.body.decode('utf-8'))	#load JSON data from frontend
+	if(data['latest'] == '1'):
+		print('hiiiiii~~~~~~~~~~~~~~')
+		valid_image = "./newABC.tif"
+		inputRaster = gdal.Open(valid_image)
+		outputRaster = r"./newABC2.tif"
 
-	# get the last saved matrix (ordered according to date added)
-	latestMatrix = matrix().__class__.objects.latest('upload_date')
-	# print(latestMatrix)
-	gdal.Warp(outputRaster,inputRaster,dstSRS='EPSG:4326')
-	valid_image = "./newABC2.tif"
-	print(latestMatrix.output)
+		# get the last saved matrix (ordered according to date added)
+		latestMatrix = matrix().__class__.objects.latest('upload_date')
+		# print(latestMatrix)
+		gdal.Warp(outputRaster,inputRaster,dstSRS='EPSG:4326')
+		valid_image = "./newABC2.tif"
+		print(latestMatrix.output)
 
-	# open the image and save it in output field of last saved matrix
-	with open(valid_image, "rb") as f:
-		latestMatrix.output.save(outputRaster,f)
-	
-	with open(valid_image, "rb") as f:
-		print(valid_image)
-		return HttpResponse(f.read(), content_type="image/tiff")
+		# open the image and save it in output field of last saved matrix
+		with open(valid_image, "rb") as f:
+			latestMatrix.output.save(outputRaster,f)
+		
+		with open(valid_image, "rb") as f:
+			print(valid_image)
+			return HttpResponse(f.read(), content_type="image/tiff")
+	else:
+		print('oh noooooooooo')
+		valid_image = '.'+data['url']
+		with open(valid_image, "rb") as f:
+			print(valid_image)
+			return HttpResponse(f.read(), content_type="image/tiff")
 
-# @csrf_exempt
+@csrf_exempt
 def getImageForMap(request):
-	return render(request, 'blog/map.html')
+	context = {}
+	context['imgUrl'] = ''
+	context['isLatest'] = 1
+	return render(request, 'blog/map.html',context)
+
+@csrf_exempt
+def getImageForMapInProfile(request):
+	data = json.loads( request.body.decode('utf-8'))	#load JSON data from frontend
+	context = {}
+	context['imgUrl'] = data['url']
+	context['isLatest'] = 0
+	valid_image = '.'+data['url']
+	# with open(valid_image, "rb") as f:
+	# 	print(valid_image)
+	return render(request, 'blog/map.html',context)

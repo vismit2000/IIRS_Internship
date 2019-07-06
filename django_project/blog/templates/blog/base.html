@@ -13,7 +13,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
     <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/flat_round/50/000000/home.png"/>
     <title>DSS AHP</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="site-header">
@@ -43,7 +46,7 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8" id="matrices">
           {% block content %}
           {% endblock %}
         </div>

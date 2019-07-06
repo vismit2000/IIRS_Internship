@@ -2,6 +2,28 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <script>
+  const sendRequest = (url, method, data) => {
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = () => {
+        if (request.readyState == 4 && request.status == 200) {
+            //success response
+            if(url == '/getImageForMapInProfile/')
+            {
+                console.log("Great!", "Image retrieved successfully!!", "success");
+                // console.log(request.response);
+                var w = window.open('about:blank');
+                w.document.open();
+                w.document.write(request.response);
+                w.document.close();
+            }
+        }
+    };
+    //open request
+    request.open(method, url, true);
+    //send request
+    request.send(JSON.stringify(data));
+};
+
   /**
   * This function is used to display all tables entered by user previously
   * 
@@ -15,7 +37,7 @@
     // {
 
     // }
-    function makeTable(dimNum,dimString,entry,uploadDate) 
+    function makeTable(dimNum,dimString,entry,uploadDate,output) 
     {
         let dimensions = dimString.split('$');
         let entries = entry.split(' ');
@@ -74,16 +96,37 @@
             //add date to a para and append it to container
             datePara.innerHTML = uploadDate;
 
-            dateDiv.appendChild(datePara);
+            dateDiv.appendChild(datePara);  
             //append container to body
             document.body.append(dateDiv);
             //append matrix to body
             document.body.append(form);
+            console.log(output);
             //'\n'
             document.body.append(br);
         }
         
+        // $(function() {
+        //     $("#mapLink").on("click",function(e) {
+        //       e.preventDefault(); // cancel the link itself
+        //       console.log(data);
+        //       $.post(this.href,JSON.stringify(data),function() {
+        //         console.log('yayyy');
+        //       });
+        //     });
+        // });
+        data = {};
+        function openMapForImage(url){
+            // console.log('dasfghdsaSDF');
+            console.log(url);
+            data['url'] = url;
+            data['latest'] = 0;
+            console.log(data);
+            sendRequest('/getImageForMapInProfile/','POST',data);
+        }
+          
   </script>
+  <!-- <a href="{% url 'getImageForMapInProfile' %}" style="display:none;" id="mapLink">Map</a> -->
     <div class="content-section" style="margin-top: 10vh;">
       <div class="media">
         
@@ -91,13 +134,24 @@
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary" style="color:white !important">{{ user.email }}</p>
         </div>
-        <div>
+        <!-- <div id="matricesEntries"> -->
             {% for matrix in matrixArr %}
-              <script type="text/javascript">
-                  makeTable("{{matrix.dimNum}}","{{matrix.dimString}}","{{ matrix.entries }}","{{ matrix.uploadDate }}");
-              </script>
+                <script type="text/javascript">
+                    makeTable("{{matrix.dimNum}}","{{matrix.dimString}}","{{ matrix.entries }}","{{ matrix.uploadDate }}","{{ matrix.output }}");
+                          // document.body.append(im);
+                </script>
+                {% if matrix.output %}
+                  <script type="text/javascript">
+                      btn = document.createElement('button');
+                      btn.onclick = function(){openMapForImage('{{ matrix.output.url }}')};
+                      btn.innerHTML ="Click me";
+                      document.body.append(btn);
+                      console.log(btn);
+                  </script>
+                {% endif %}
             {% endfor %}
-        </div>
+        <!-- </div> -->
       </div>
     </div>
+  
 {% endblock content %}

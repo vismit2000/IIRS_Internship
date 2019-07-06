@@ -9,7 +9,7 @@ class matrix(models.Model):
     dimensionsString = models.CharField(max_length = 1000)  #name of dimensions
     entries = models.CharField(max_length = 1000)   #values user entered
     # output is the output image corresponding to givn matrix values
-    output = models.ImageField(upload_to = "outputImages/", null = True)
+    output = models.ImageField(upload_to = "outputImages/", default='outputImages/rasql_1.png')
     dimensionsMapping = models.CharField(max_length = 10000, null = True)
     def __str__(self):
         return self.dimensionsString

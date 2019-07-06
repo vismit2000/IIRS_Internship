@@ -119,13 +119,9 @@
                     subdomains: "abcd",
                     maxZoom: 19
                 }).addTo(map);
-                var imgDetails = {
-                   'latest' : "{{isLatest}}",
-                   'url' : "{{imgUrl}}"
-                }
-                console.log(imgDetails);
-                var tiff = "/getTiff/";
-                    fetch(tiff,{method:'POST',body: JSON.stringify(imgDetails)}).then(r => r.arrayBuffer()).then(function(buffer) {
+
+                var tiff = "/getTiff";
+                    fetch(tiff).then(r => r.arrayBuffer()).then(function(buffer) {
                     document.getElementById('map').style.display='block';
                     var s = L.ScalarField.fromGeoTIFF(buffer);
                   //   console.log(s.range);
