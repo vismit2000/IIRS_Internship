@@ -211,7 +211,7 @@ def getImageForMapInProfile(request):
 	context = {}
 	context['imgUrl'] = data['url']
 	context['isLatest'] = 0
-	valid_image = '.'+data['url']
+	# valid_image = '.'+data['url']
 	# with open(valid_image, "rb") as f:
 	# 	print(valid_image)
 	return render(request, 'blog/map.html',context)
