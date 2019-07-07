@@ -7,10 +7,7 @@ Admin details :
 
 Web-based spatial decision support system using multi-criteria analysis (AHP)
 
-git clone --single-branch --branch <branchname> host:/dir.git
-
-Here
-git clone --single-branch --branch USerProfileFunctionality https://github.com/vismit2000/IIRS_Internship
+git clone https://github.com/vismit2000/IIRS_Internship
 
 
 Go to Vishal_bits directory
