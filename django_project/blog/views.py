@@ -17,6 +17,13 @@ import sys, gdal
 import numpy as np
 import base64
 
+maxOfResultantArray = None
+minOfResultantArray = None
+range1 = None
+range2 = None
+range3 = None
+range4 = None
+
 np.set_printoptions(threshold=sys.maxsize)
 
 @login_required
@@ -60,6 +67,10 @@ def saveMatrix(request):
 # 	return JsonResponse({'error':'true','message':'Failed'})
 
 def processImages(request):
+	global range1
+	global range2
+	global range3
+	global range4
 	if request.method == "POST":
 
 		# --------------------Uncomment following for upload functionality------------------------------
@@ -132,6 +143,44 @@ def processImages(request):
 			else:
 				resultantArr = resultantArr + arr
 
+		maxOfResultantArray = np.amax(resultantArr)
+		print(maxOfResultantArray)
+		minOfResultantArray = np.amin(resultantArr)
+		print(['min',minOfResultantArray])
+		temp = (maxOfResultantArray-minOfResultantArray)/4
+		a = minOfResultantArray
+		b = a + temp
+		a = round(a, 2)
+		b = round(b, 2)
+
+		range1 = "" + str(a) + " - " + str(b)
+		print(['first:',a,b,range1])
+
+		a = b
+		b = a + temp
+		a = round(a, 2)
+		b = round(b, 2)
+
+		range2 = "" + str(a) + " - " + str(b)
+		print(['2nd:',a,b,range2])
+
+		a = b
+		b = a + temp
+		a = round(a, 2)
+		b = round(b, 2)
+
+		range3 = "" + str(a) + " - " + str(b)
+
+		print(['3rd:',a,b,range3])
+
+		a = b
+		b = a + temp
+		a = round(a, 2)
+		b = round(b, 2)
+
+		range4 = "" + str(a) + " - " + str(b)
+
+		print(['4th:',a,b,range4])
 		# save resultant array as tif image using informations from one of input image (Here using last one)
 		# ds = gdal.Open('./veg.tif' , GA_ReadOnly)
 		geotransform = ds.GetGeoTransform()
@@ -163,7 +212,7 @@ def processImages(request):
 		ds = None
 		dst_ds = None
 		
-		data = {'error':'false'}
+		data = {'error':'false','ranges':[range1,range2,range3,range4]}
 		print(json.dumps(data))
 		return JsonResponse(data)
 	return JsonResponse({'error':'true'})
@@ -203,6 +252,11 @@ def getImageForMap(request):
 	context = {}
 	context['imgUrl'] = ''
 	context['isLatest'] = 1
+	context['range1'] = range1
+	context['range2'] = range2
+	context['range3'] = range3
+	context['range4'] = range4
+
 	return render(request, 'blog/map.html',context)
 
 @csrf_exempt
@@ -211,6 +265,10 @@ def getImageForMapInProfile(request):
 	context = {}
 	context['imgUrl'] = data['url']
 	context['isLatest'] = 0
+	context['range1'] = range1
+	context['range2'] = range2
+	context['range3'] = range3
+	context['range4'] = range4
 	# valid_image = '.'+data['url']
 	# with open(valid_image, "rb") as f:
 	# 	print(valid_image)

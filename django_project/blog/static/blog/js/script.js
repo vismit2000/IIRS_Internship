@@ -423,6 +423,7 @@ const sendRequest = (url, method, data) => {
                 response = JSON.parse(request.response);
                 if(response.error == 'false')
                 {
+                    console.log(response);
                     // sendRequest('/getImageForMap/','POST');
                     document.getElementById('mapLink').click();
                 }

@@ -793,3 +793,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	background-color: black;
     color: white !important;
 }
+
+#suitabilityTable{
+	z-index: 1000000000000000000;
+    position: absolute;
+    right: 2vw;
+    width: 20vw;
+}

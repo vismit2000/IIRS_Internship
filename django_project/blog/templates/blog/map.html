@@ -63,13 +63,13 @@
             </div>        
             <div id="floating-panel">
                <ul>
-                   <li id="gradientPanel">
+                   <!-- <li id="gradientPanel">
                        <label>Gradient</label>
                        <input type="color" id="lowColor" value="#FFFFFF">
                        <input type="color" id="highColor" value="#000000">
                    </li>
-       
-                   <li id="colorBrewerPanel" style="display:none;">
+        -->
+                   <li id="colorBrewerPanel" >
                        <label>Palettes</label>
                        <!-- some color scales... (for a full list see: https://github.com/gka/chroma.js/wiki/Predefined-Colors) -->
                        <select id="colorBrewer">
@@ -121,7 +121,11 @@
                 }).addTo(map);
                 var imgDetails = {
                    'latest' : "{{isLatest}}",
-                   'url' : "{{imgUrl}}"
+                   'url' : "{{imgUrl}}",
+                   'range1' : "{{range1}}",
+                   'range2' : "{{range2}}",
+                   'range3' : "{{range3}}",
+                   'range4' : "{{range4}}"
                 }
                 console.log(imgDetails);
                 var tiff = "/getTiff/";
@@ -141,16 +145,17 @@
                     });
 
                     
-                    var layer1 = L.canvasLayer.scalarField(s, {
-                        color: chroma.scale(['white', 'black']).domain(s.range),
-                        mouseMoveCursor: null
-                     }).addTo(map);
-                     map.fitBounds(layer1.getBounds());
+                  //   var layer1 = L.canvasLayer.scalarField(s, {
+                  //       color: chroma.scale(['white', 'black']).domain(s.range),
+                  //       mouseMoveCursor: null
+                  //    }).addTo(map);
+                  //    map.fitBounds(layer1.getBounds());
 
                      var layer2 = L.canvasLayer.scalarField(s, {
                         color: chroma.scale('OrRd').domain(s.range),
                         mouseMoveCursor: null
-                     });
+                     }).addTo(map);
+                      map.fitBounds(layer2.getBounds());;
 
                      // var layer3 = L.canvasLayer.scalarField(s, {
                      //    color: chroma.scale('OrRd').classes(5),
@@ -158,7 +163,7 @@
                      // });
 
                      var layers = {
-                        'Two colors gradient': layer1,
+                        //'Two colors gradient': layer1,
                         'ColorBrewer2': layer2,
                         // 'Classes (n-equidistant)': layer3
                      };
@@ -172,12 +177,12 @@
                      let gradientColors = document.getElementsByTagName('input[type=color]');
                      let low = document.getElementById('lowColor');
                      let high = document.getElementById('highColor');
-                     var updateGradient = function () {
-                        var scale = chroma.scale([low.value, high.value]).domain(s.range);
-                        layer1.setColor(scale);
-                     }
-                     low.addEventListener('input', updateGradient);
-                     high.addEventListener('input', updateGradient);
+                     // var updateGradient = function () {
+                     //    var scale = chroma.scale([low.value, high.value]).domain(s.range);
+                     //    layer1.setColor(scale);
+                     // }
+                     // low.addEventListener('input', updateGradient);
+                     // high.addEventListener('input', updateGradient);
 
                      //      colorBrewer scale
                      let colorBrewer = document.getElementById('colorBrewer');
@@ -198,8 +203,8 @@
 
                      //      enable panels
                      map.on('baselayerchange', function (e) {
-                        let gradientPanel = document.getElementById('gradientPanel');
-                        gradientPanel.style.display = (e.layer === layer1) ? "block" : "none";
+                        // let gradientPanel = document.getElementById('gradientPanel');
+                        // gradientPanel.style.display = (e.layer === layer1) ? "block" : "none";
 
                         let colorBrewerPanel = document.getElementById('colorBrewerPanel');
                         colorBrewerPanel.style.display = (e.layer === layer2) ? "block" : "none";
@@ -212,5 +217,42 @@
                     });
             }
       </script>
+
+      <!-- ================================= Suitability table ================================= -->
+   <div id="suitabilityTable" >
+      <div class="table-title">
+            <h3 style="text-align: center;">Potential Habitat Suitability</h3>
+            </div>
+            <table class="table-fill">
+            <thead>
+            <tr>
+               <th class="text-center">Value</th>
+               <th class="text-center">Suitability</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            <tr>
+               <td class="text-center">"{{range1}}"</td>
+               <td class="text-center">Highly Suitable</td>
+            </tr>
+            <tr>
+               <td class="text-center">"{{range2}}"</td>
+               <td class="text-center">Suitable</td>
+            </tr>
+            <tr>
+               <td class="text-center">"{{range3}}"</td>
+               <td class="text-center">Moderately Suitable</td>
+            </tr>
+            <tr>
+               <td class="text-center">"{{range4}}"</td>
+               <td class="text-center">Least Suitable</td>
+            </tr>
+            </tbody>
+            </table>                     
+   </div>
+   <!-- =================================Suitability table ends here ================================= -->
+
    </body>
 </html>
+
+
