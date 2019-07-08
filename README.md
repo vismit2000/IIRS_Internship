@@ -1,15 +1,22 @@
 # Project Title
 
-A web based decision support system (DSS) using multi-criteria analysis technique to achieve the following task:
+A web based decision support system (DSS) using multi-criteria analysis technique AHP to achieve the following task:
 
-1.
+1. To identify potential suitable habitat of swamp deer using geospatial analysis
 
-2.
+2. Adding your own weights to generate different criteria weights
 
-3.
+3. Reclassifying images on the fly on the basis of suitability
 
 # Description
-----------------------
+
+Decision Support System drive faster, smarter decisions based on objective data, rather than on subjective criteria or personal instinct.
+
+Why to make DSS?
+- Decisions require computation
+- Lots of data
+- High consistency
+- Rapid choices
 
 ## Getting Started
 
@@ -32,7 +39,64 @@ sudo apt install git
 ```
 
 3. Geodjango installation
-------------
+
+### What is GeoDjango?
+
+GeoDjango is an included contrib module for Django that turns it into a geographic Web framework. GeoDjango strives to make it as simple as possible to create geographic Web applications, like location-based services. Its features include:
+    - Django model fields for OGC geometries and raster data.
+    - Extensions to Django’s ORM for querying and manipulating spatial data.
+    - Loosely-coupled, high-level Python interfaces for GIS geometry and raster operations and data manipulation in different formats.
+    - Editing geometry fields from the admin.
+
+#### Requirements:
+
+    1. Python and Django
+    2. Spatial database - PostgreSQL (with PostGIS)
+    3. Installing Geospatial libraries - GEOS, GDAL, PROJ.4, PostGIS (Supported versions : 9.4+)
+
+    Step-1: Install Django
+
+    ```bash
+    sudo apt install python3-django
+    ```
+
+    Upgrade to Django version 2
+
+    ```bash
+    pip3 install --upgrade django
+    python3 -m django --version
+    ```
+
+    Output should be # 2.2.2
+
+    Step-2 : Install PostgreSQL and PostGIS extension
+
+    ```bash
+    sudo lsb_release -a
+
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt ubuntu_codename-pgdg main" >> /etc/apt/sources.list'
+
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" >> /etc/apt/sources.list'
+
+    wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+
+    sudo apt update
+
+    sudo apt install postgresql-10
+
+    sudo apt install postgresql-10-postgis-2.4
+
+    sudo apt install postgresql-10-postgis-scripts
+
+    sudo apt install postgresql-10-pgrouting
+    ```
+
+    Step-3 : Install Geospatial libraries
+
+    ```bash
+    sudo apt-get install binutils libproj-dev gdal-bin
+    ```
+
 
 ## Configuring PostgreSQL
 
@@ -85,7 +149,7 @@ sudo apt-get install python-gdal
 ```
 
 
-### Installation
+### Installation of the project
 1. Clone or download the repository.
     ```bash
     git clone https://github.com/vismit2000/IIRS_Internship
@@ -111,6 +175,58 @@ sudo apt-get install python-gdal
     http://localhost:8000 
 
 
+### Sample run
+
+1. Register yourself
+
+![Register](./Images/1_Register.png?raw=true "Register")
+
+2. Login into your account
+
+![Login](./Images/2_Login.png?raw=true "Login")
+
+3. Now you are on home page. Reclassify dimensions by selecting 'Select Ranges'
+
+![Reclassify](./Images/4_Reclassify_Dimensions.png?raw=true "Reclassify")
+
+4. Example for reclassifying Vegetation:
+
+![Reclassify_veg](./Images/5_Reclassify_veg.png?raw=true "Reclassify_veg")
+
+    Press 'Submit Dimensions' after reclassifying all dimensions.
+
+5. Enter values of matrix with help from Importance Table and press 'Calculate Column Sum'
+
+![Calc_column_sum](./Images/11_Calc_column_sum.png?raw=true "Calc_column_sum")
+
+6. Normalize matrix and generate criteria weights.
+
+![Gen_criteria_weights](./Images/13_Gen_criteria_weights.png?raw=true "Gen_criteria_weights")
+
+7. Check consistency ratio. You will be directed to Step-5 to enter matrix again if consistency ratio < 0.1
+
+![Check_consistency](./Images/14_Check_consistency.png?raw=true "Check_consistency")
+
+8. Now save your matrix for future reference and press 'Display Final Image' to display the final image.
+
+```sh
+Note : 1. You can also diaplay final image from your profile.
+       2. Colour theme of final image can be changed from the palette.
+```
+
+
+## Visulaization of final raster result
+
+Final image shows four suitability areas for habitat of swamp deer :
+
+    * Highly suitable
+    * Suitable
+    * Moderately suitable
+    * Least suitable
+
+![Final_Image](./Images/16_Final_image.png?raw=true "Final Image")
+
+
 ##Admin details :
 
 ```
@@ -134,7 +250,7 @@ The view is not responsible for having the process itself, it is the controller.
 
 T — Template: The template is there to define the markup that will be processed by the view. The template system that Django uses is sophisticated and allow extensions and few logical operations. Due to the high-level of customization that is possible here, it is very easy to add a lot of business logic to that. Template should deal only with the presentation aspect of our application.
 
-![MVC](./mvc.png?raw=true "Model View Controller")
+![MVC](./Images/mvc.png?raw=true "Model View Controller")
 
 ## MVC in web application
 
@@ -169,9 +285,9 @@ Raster operations can be classified into global, zonal, focal and local operatio
 
 ### Local Operations
 
-![Map Algebra](./mapAlg1.png?raw=true "Map Algebra")
+![Map Algebra](./Images/mapAlg1.png?raw=true "Map Algebra")
 
-![Map Algebra](./mapAlg2.png?raw=true "Map Algebra")
+![Map Algebra](./Images/mapAlg2.png?raw=true "Map Algebra")
 
 The value generated in the output raster is a function of cell values at the same location on in the input layers.
 
@@ -183,16 +299,8 @@ Here are examples of operations that can be used between the two raster layers:
     * Trigonometric operations (sine, cosine, tangent, arcsine)
     * Exponential and logarithmic operations (exponent, logarithm)
 
-![Matrix](./matrix.png?raw=true "Matrix")
+![Matrix](./Images/matrix.png?raw=true "Matrix")
 
-## Visulaization of final raster result
-
-Final image shows four suitability areas for habitat of swamp deer :
-
-    * Highly suitable
-    * Suitable
-    * Moderately suitable
-    * Least suitable
 
 ### Tech Stack used
 
@@ -203,4 +311,13 @@ Final image shows four suitability areas for habitat of swamp deer :
 
 ## Acknowledgments
 
-* Kapil Oberoi Sir (IIRS)
+* Kapil Oberoi Sir (IIRS Dehradun)
+
+## Acronyms
+- DSS                 Decision Support System
+- AHP                 Analytical Hierarchy Process
+- MVC                 Model View Controller Architecture
+- GDAL                Geospatial Data Abstraction Library
+- OGR                 OpenGIS Simple Features Reference Implementation
+- GIS                 Geographic Information System
+- QGIS                Quantum Geographic Information System
