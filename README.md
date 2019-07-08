@@ -50,9 +50,9 @@ GeoDjango is an included contrib module for Django that turns it into a geograph
 
 #### Requirements:
 
-    1. Python and Django
-    2. Spatial database - PostgreSQL (with PostGIS)
-    3. Installing Geospatial libraries - GEOS, GDAL, PROJ.4, PostGIS (Supported versions : 9.4+)
+1. Python and Django
+2. Spatial database - PostgreSQL (with PostGIS)
+3. Installing Geospatial libraries - GEOS, GDAL, PROJ.4, PostGIS (Supported versions : 9.4+)
 
     Step-1: Install Django
 
