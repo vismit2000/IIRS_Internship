@@ -312,6 +312,7 @@ Here are examples of operations that can be used between the two raster layers:
 ## Acknowledgments
 
 * Kapil Oberoi Sir (IIRS Dehradun)
+* Sameer Saran Sir (IIRS Dehradun)
 
 ## Acronyms
 - DSS                 Decision Support System
