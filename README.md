@@ -285,7 +285,7 @@ Raster operations can be classified into global, zonal, focal and local operatio
 
 ### Local Operations
 
-![Map Algebra](./Images/mapAlg1.png?raw=true "Map Algebra")
+![Map Algebra](./Images/mAlg1.png?raw=true "Map Algebra")
 
 ![Map Algebra](./Images/mapAlg2.png?raw=true "Map Algebra")
 
