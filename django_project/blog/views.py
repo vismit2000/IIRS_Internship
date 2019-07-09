@@ -144,9 +144,7 @@ def processImages(request):
 				resultantArr = resultantArr + arr
 
 		maxOfResultantArray = np.amax(resultantArr)
-		print(maxOfResultantArray)
 		minOfResultantArray = np.amin(resultantArr)
-		print(['min',minOfResultantArray])
 		temp = (maxOfResultantArray-minOfResultantArray)/4
 		a = minOfResultantArray
 		b = a + temp
@@ -154,7 +152,6 @@ def processImages(request):
 		b = round(b, 2)
 
 		range1 = "" + str(a) + " - " + str(b)
-		print(['first:',a,b,range1])
 
 		a = b
 		b = a + temp
@@ -162,7 +159,6 @@ def processImages(request):
 		b = round(b, 2)
 
 		range2 = "" + str(a) + " - " + str(b)
-		print(['2nd:',a,b,range2])
 
 		a = b
 		b = a + temp
@@ -171,8 +167,6 @@ def processImages(request):
 
 		range3 = "" + str(a) + " - " + str(b)
 
-		print(['3rd:',a,b,range3])
-
 		a = b
 		b = a + temp
 		a = round(a, 2)
@@ -180,7 +174,6 @@ def processImages(request):
 
 		range4 = "" + str(a) + " - " + str(b)
 
-		print(['4th:',a,b,range4])
 		# save resultant array as tif image using informations from one of input image (Here using last one)
 		# ds = gdal.Open('./veg.tif' , GA_ReadOnly)
 		geotransform = ds.GetGeoTransform()
