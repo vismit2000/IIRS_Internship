@@ -227,13 +227,6 @@ Final image shows four suitability areas for habitat of swamp deer :
 ![Final_Image](./Images/16_Final_image.png?raw=true "Final Image")
 
 
-##Admin details :
-
-```
-** Username : vishal
-** Password : Vishal@2000
-```
-
 # Django MVC Architecture
 
 The MVC is an architectural pattern that separates an application into three main logical components
