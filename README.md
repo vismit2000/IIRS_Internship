@@ -257,10 +257,10 @@ Model – Set of applications that take input data and put data into website’s
 
 Issues related to web-based spatial decision support system:
 
-    * Performance
-    * Integration of various technologies
-    *  Security
-    * Interoperability
+    - Performance
+    - Integration of various technologies
+    - Security
+    - Interoperability
 
 Server : A distant computer that provides services
 
