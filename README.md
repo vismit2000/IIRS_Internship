@@ -219,10 +219,10 @@ Note : 1. You can also diaplay final image from your profile.
 
 Final image shows four suitability areas for habitat of swamp deer :
 
-    * Highly suitable
-    * Suitable
-    * Moderately suitable
-    * Least suitable
+    - Highly suitable
+    - Suitable
+    - Moderately suitable
+    - Least suitable
 
 ![Final_Image](./Images/16_Final_image.png?raw=true "Final Image")
 
