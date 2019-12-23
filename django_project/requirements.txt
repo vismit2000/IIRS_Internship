@@ -96,7 +96,7 @@ olefile==0.45.1
 OWSLib==0.16.0
 pandas==0.24.2
 pandocfilters==1.4.2
-paramiko==2.0.0
+paramiko==2.0.9
 parso==0.5.0
 passlib==1.7.1
 pexpect==4.7.0
