@@ -101,7 +101,7 @@ parso==0.5.0
 passlib==1.7.1
 pexpect==4.7.0
 pickleshare==0.7.5
-Pillow==6.0.0
+Pillow==6.2.0
 plotly==2.2.3
 ply==3.11
 prometheus-client==0.7.1
