@@ -134,7 +134,7 @@ PyYAML==3.12
 pyzmq==18.0.2
 rasterio==1.0.24
 reportlab==3.4.0
-requests==2.18.4
+requests==2.20.0
 requests-unixsocket==0.1.5
 s3transfer==0.2.1
 SecretStorage==2.3.1
