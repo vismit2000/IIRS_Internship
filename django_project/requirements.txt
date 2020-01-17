@@ -129,8 +129,8 @@ python-apt==1.6.4
 python-dateutil==2.8.0
 python-debian==0.1.32
 pytz==2019.1
-pyxdg==0.26
-PyYAML==3.12
+pyxdg==0.25
+PyYAML==5.1
 pyzmq==18.0.2
 rasterio==1.0.24
 reportlab==3.4.0
