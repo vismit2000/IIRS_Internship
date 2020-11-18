@@ -89,7 +89,7 @@ munch==2.3.2
 nbconvert==5.5.0
 nbformat==4.4.0
 netifaces==0.10.4
-notebook==5.7.8
+notebook==6.1.5
 numpy==1.16.4
 oauth==1.0.1
 olefile==0.45.1
