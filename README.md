@@ -112,13 +112,13 @@ sudo -i -u postgres
 createuser --interactive
 ```
 
-Enter name of role to add: happy
+Enter name of role to add: testuser
 Shall the new role be a superuser? (y/n) y
 
 3. Create a New Database
 
 ```bash
-createdb corey
+createdb DSS_db
 psql -d postgres
 ```
 
@@ -127,12 +127,12 @@ Once logged in, you can get check your current connection information by typing:
 postgres=# \conninfo
 ```
 
-Output : You are connected to database "corey" as user "happy" via socket in "/var/run/postgresql" at port "5432".
+Output : You are connected to database "DSS_db" as user "testuser" via socket in "/var/run/postgresql" at port "5432".
 
 4. Create username and password
 
 ```bash
-sudo -u postgres psql -c "ALTER ROLE happy WITH password 'Vishal@2000'"
+sudo -u postgres psql -c "ALTER ROLE testuser WITH password '<password>'"
 ```
 
 Or to create your own user to be linked with database, create a user using “postgres createuser” and give it a password and accordingly inside settings.py add username and password (because it will be used by django to connect to database)
