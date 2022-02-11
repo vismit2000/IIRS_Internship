@@ -14,7 +14,7 @@ blinker==1.4
 boto3==1.9.171
 botocore==1.12.171
 Brlapi==0.6.6
-celery==4.3.0
+celery==5.2.2
 certifi==2018.1.18
 chardet==3.0.4
 Click==7.0
