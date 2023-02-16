@@ -48,7 +48,7 @@ Flask-Principal==0.4.0
 Flask-Security==1.7.5
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.14.2
-future==0.15.2
+future==0.18.3
 GDAL==2.2.2
 html5lib==0.999999999
 htmlmin==0.1.12
