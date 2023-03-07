@@ -93,7 +93,7 @@ notebook==6.1.5
 numpy==1.21.0
 oauth==1.0.1
 olefile==0.45.1
-OWSLib==0.16.0
+OWSLib==0.28.1
 pandas==0.24.2
 pandocfilters==1.4.2
 paramiko==2.0.9
