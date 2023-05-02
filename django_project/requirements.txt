@@ -65,7 +65,7 @@ Jinja2==2.11.3
 jmespath==0.9.4
 jsonschema==3.0.1
 jupyter-client==5.2.4
-jupyter-core==4.5.0
+jupyter-core==4.11.2
 jupyterthemes==0.20.0
 keyring==10.6.0
 keyrings.alt==3.0
