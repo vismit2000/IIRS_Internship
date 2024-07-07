@@ -53,7 +53,7 @@ GDAL==2.2.2
 html5lib==0.999999999
 htmlmin==0.1.12
 httplib2>=0.18.0
-idna==2.6
+idna==3.7
 ipykernel==5.1.1
 ipython==8.10.0
 ipython-genutils==0.2.0
