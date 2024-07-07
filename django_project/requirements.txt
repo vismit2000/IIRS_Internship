@@ -150,7 +150,7 @@ system-service==0.3
 systemd-python==234
 terminado==0.8.2
 testpath==0.4.2
-tornado==6.3.3
+tornado==6.4.1
 traitlets==4.3.2
 typed-ast==1.4.0
 ubuntu-drivers-common==0.0.0
